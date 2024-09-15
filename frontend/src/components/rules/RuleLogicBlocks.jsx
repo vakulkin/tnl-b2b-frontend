@@ -5,18 +5,15 @@ import RenderIfVisible from "react-render-if-visible";
 import LogicBlockCard from "../logicBlocks/LogicBlockCard";
 import RuleLogicBlocksActions from "./RuleLogicBlocksActions";
 
-const LogicBlocksContainer = ({ logicBlocksIds }) => {
+const LogicBlocksContainer = ({ rule }) => {
   const entityKey = "logic_blocks";
 
-  const logicBlockIdsArray = logicBlocksIds
-    ? logicBlocksIds
-        .split(",")
-        .map((id) => id.trim())
-        .filter(Boolean)
+  const logicBlockIds = rule.logic_blocks
+    ? JSON.parse(rule.logic_blocks)
     : [];
 
   const { useEntitiesQueries } = useManagement(entityKey);
-  const logicBlocksQueries = useEntitiesQueries(logicBlockIdsArray, "joined");
+  const logicBlocksQueries = useEntitiesQueries(logicBlockIds.map(item => item.rk), "joined");
 
   if (logicBlocksQueries.some((query) => query.isLoading)) {
     return <p>Loading logic blocks...</p>;
@@ -29,17 +26,21 @@ const LogicBlocksContainer = ({ logicBlocksIds }) => {
   return (
     <Box>
       {logicBlocksQueries.map((query, index) => (
-        <RenderIfVisible key={logicBlockIdsArray[index]} defaultHeight={50}>
+        <RenderIfVisible key={logicBlockIds[index].pk} defaultHeight={50}>
           {query.data ? <LogicBlockCard logicBlock={query.data[0]} /> : null}
         </RenderIfVisible>
       ))}
-      <RuleLogicBlocksActions />
+      <RuleLogicBlocksActions rule={rule} />
     </Box>
   );
 };
 
 LogicBlocksContainer.propTypes = {
-  logicBlocksIds: PropTypes.string,
+  rule: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    logic_blocks: PropTypes.string,
+  }).isRequired,
 };
 
 export default LogicBlocksContainer;

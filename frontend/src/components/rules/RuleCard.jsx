@@ -21,8 +21,7 @@ const RuleCard = ({ rule }) => {
       >
         <RuleDetails rule={rule} />
       </CardHeader>
-      <RuleLogicBlocks logicBlocksIds={rule.logic_blocks} />
-
+      <RuleLogicBlocks rule={rule} />
     </Box>
   );
 };

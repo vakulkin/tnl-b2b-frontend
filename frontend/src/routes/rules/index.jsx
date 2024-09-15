@@ -22,7 +22,12 @@ const Rules = () => {
           <RuleCard key={rule.id} rule={rule} />
         ))}
         <EditModal entityKey={entityKey} />
-        <EditModal entityKey={"logic_blocks"} />
+        <EditModal entityKey="logic_blocks" />
+        <EditModal entityKey="products" />
+        <EditModal entityKey="users" />
+        <EditModal entityKey="groups" />
+        <EditModal entityKey="terms" />
+        <EditModal entityKey="roles" />
       </Box>
     </>
   );

@@ -14,14 +14,22 @@ const UsersConditions = ({ userIds, roleIds }) => {
       }}
     >
       <Grid container spacing={2} columns={14} alignItems="center">
-        <Grid size={{xs: 14, xl: 6}}>
-          <Condition title="Użytkownik to:" entityKey="users" items={userIds} />
+        <Grid size={{ xs: 14, xl: 6 }}>
+          {/* <Condition
+            title="Użytkownik to:"
+            entityKey="users"
+            items={userIds}
+          /> */}
         </Grid>
-        <Grid size={{xs: 14, xl: 2}}>
+        <Grid size={{ xs: 14, xl: 2 }}>
           <LogicSeparator separator="lub" />
         </Grid>
-        <Grid size={{xs: 14, xl: 6}}>
-          <Condition title="Użytkownik ma role:" entityKey="roles" items={roleIds} />
+        <Grid size={{ xs: 14, xl: 6 }}>
+          <Condition
+            title="Użytkownik ma role:"
+            entityKey="roles"
+            items={roleIds}
+          />
         </Grid>
       </Grid>
     </Box>

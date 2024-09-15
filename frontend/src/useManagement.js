@@ -89,7 +89,7 @@ export const useManagement = (entityName) => {
     (newEntity) => apiRequest("post", apiUrl(), newEntity),
     (data) => {
       if (data?.[0]?.id) {
-        handleFormDialogOpen('edit', data.id);
+        handleFormDialogOpen('link', data.id, 'logic_blocks');
       }
     }
   );

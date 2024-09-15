@@ -1,39 +1,90 @@
 import PropTypes from "prop-types";
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Formik, Form, Field } from "formik";
+import { DialogActions, Button, TextField, DialogTitle, DialogContent } from "@mui/material";
 import { getEntityStore } from "../../store";
-import EntityForm from "./EntityForm";
-import DeleteEntityForm from "./DeleteEntityForm";
+import { useManagement } from "../../useManagement";
 
-const EditModal = ({ entityKey }) => {
+
+const EntityForm = ({ entityKey }) => {
   const useStore = getEntityStore(entityKey);
-  const { formMode, isFormDialogOpen, handleFormDialogClose } = useStore();
+  const { formMode, selectedEntityId, handleFormDialogClose } = useStore();
 
-  const renderContent = () => {
-    if (["add", "edit"].includes(formMode)) {
-      return <EntityForm entityKey={entityKey} />;
-    } else if (formMode === "delete") {
-      return <DeleteEntityForm entityKey={entityKey} />;
+  const { useEntityQuery, useEntitiesQuery, createMutation, updateMutation } =
+    useManagement(entityKey);
+
+  const { data: formData, isLoading: fromIsloading } = useEntitiesQuery("form");
+
+  const { data: entityData, isLoading: entityIsloading } = useEntityQuery(
+    selectedEntityId,
+    "joined"
+  );
+
+  if (fromIsloading || entityIsloading) return "lodaing...";
+
+  const fieldsList = Object.keys(formData);
+
+  const createOrUdate = "add" === formMode;
+
+  const initialValues = createOrUdate
+    ? fieldsList.reduce((acc, key) => {
+      acc[key] = "";
+      return acc;
+    }, {})
+    : fieldsList.reduce((acc, key) => {
+      acc[key] = entityData?.[0]?.[key] || "";
+      return acc;
+    }, {});
+
+  const handleSubmit = (values) => {
+    if (createOrUdate) {
+      createMutation.mutate({ ...values });
+    } else {
+      updateMutation.mutate({ id: selectedEntityId, ...values });
     }
   };
 
   return (
-    <Dialog open={isFormDialogOpen} onClose={handleFormDialogClose} fullWidth>
-      <DialogTitle>
-        {formMode === "add"
-          ? "Add Entity"
-          : formMode === "edit"
-            ? "Edit Entity"
-            : "Delete Entity"}
-      </DialogTitle>
-      <DialogContent>
-        {renderContent()} {formMode}
-      </DialogContent>
-    </Dialog>
+
+    <>      <DialogTitle>
+      {formMode === "add" ? "Add Entity" : "Edit Entity"}
+    </DialogTitle>
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={initialValues}
+        enableReinitialize
+      >
+        {({ errors, touched }) => (
+          <Form>
+            <DialogContent>
+              {fieldsList.map((field) => (
+                <Field
+                  as={TextField}
+                  key={field}
+                  name={field}
+                  label={field}
+                  fullWidth
+                  margin="normal"
+                  error={touched[field] && Boolean(errors[field])}
+                  helperText={touched[field] && errors[field]}
+                />
+              ))}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleFormDialogClose}>Close</Button>
+              <Button type="submit" variant="contained" color="primary">
+                {"add" === formMode ? "Create" : "Update"}
+              </Button>
+            </DialogActions>
+          </Form>
+        )}
+      </Formik>
+    </>
+
   );
 };
 
-EditModal.propTypes = {
+EntityForm.propTypes = {
   entityKey: PropTypes.string.isRequired,
 };
 
-export default EditModal;
+export default EntityForm;

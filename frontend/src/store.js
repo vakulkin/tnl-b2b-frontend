@@ -9,11 +9,16 @@ const commonStoreInitialState = {
 };
 
 const formDialogHandlers = (set) => ({
-  handleFormDialogOpen: (formMode, entityId = null) => {
+  handleFormDialogOpen: (
+    formMode,
+    entityId = null,
+    attachmentEntity = null
+  ) => {
     set({
       formMode,
       selectedEntityId: entityId,
       isFormDialogOpen: true,
+      attachmentEntity: attachmentEntity,
     });
   },
   handleFormDialogClose: () => {
@@ -21,6 +26,7 @@ const formDialogHandlers = (set) => ({
       formMode: null,
       selectedEntityId: null,
       isFormDialogOpen: false,
+      attachmentEntity: null,
     });
   },
 });
@@ -71,6 +77,10 @@ export const useConditionTermsStore = getEntityStore(
   "condition_terms",
   formDialogHandlers
 );
+export const useRuleBlockRelations = getEntityStore(
+  "rule_block_relations",
+  formDialogHandlers
+);
 export const useBlockConditionUsersRelationsStore = getEntityStore(
   "block_condition_users_relations",
   formDialogHandlers
@@ -81,5 +91,6 @@ export const useUserRoleRelationsStore = getEntityStore(
 );
 
 // Example entity stores without form dialog handlers
-export const useProductsStore = getEntityStore("products");
-export const useUsersStore = getEntityStore("users");
+export const useProductsStore = getEntityStore("products", formDialogHandlers);
+export const useUsersStore = getEntityStore("users", formDialogHandlers);
+export const useTermssStore = getEntityStore("terms", formDialogHandlers);

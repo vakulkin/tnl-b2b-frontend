@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
-import { DialogActions, Button } from "@mui/material";
+import { DialogActions, Button, Typography, DialogTitle, DialogContent } from "@mui/material";
 import { getEntityStore } from "../../store";
 import { useManagement } from "../../useManagement";
 
 const DeleteEntityForm = ({ entityKey }) => {
   const useStore = getEntityStore(entityKey);
   const { selectedEntityId, handleFormDialogClose } = useStore();
-  
+
   const { deleteMutation } = useManagement(entityKey);
 
   // Handle the delete action
@@ -16,15 +16,20 @@ const DeleteEntityForm = ({ entityKey }) => {
   };
 
   return (
-    <div>
-      <p>Are you sure you want to delete this entity? This action cannot be undone.</p>
+    <>
+      <DialogTitle>
+        Delete
+      </DialogTitle>
+      <DialogContent>
+        <Typography>Are you sure you want to delete this entity? This action cannot be undone.</Typography>
+      </DialogContent>
       <DialogActions>
         <Button onClick={handleFormDialogClose}>Cancel</Button>
-        <Button variant="contained" color="secondary" onClick={handleDelete}>
+        <Button variant="contained" onClick={handleDelete}>
           Delete
         </Button>
       </DialogActions>
-    </div>
+    </>
   );
 };
 

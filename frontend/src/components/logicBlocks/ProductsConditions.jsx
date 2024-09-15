@@ -14,13 +14,17 @@ const ProductsConditions = ({ productIds, groupIds, termIds }) => {
       }}
     >
       <Grid container spacing={2} columns={13} alignItems="center">
-        <Grid size={{xs: 13, xl: 4}}>
-          <Condition title="Produkt to:" entityKey="products" items={productIds} />
+        <Grid size={{ xs: 13, xl: 4 }}>
+          {/* <Condition
+            title="Produkt to:"
+            entityKey="products"
+            items={productIds}
+          /> */}
         </Grid>
-        <Grid size={{xs: 13, xl: 1}}>
+        <Grid size={{ xs: 13, xl: 1 }}>
           <LogicSeparator separator="lub" />
         </Grid>
-        <Grid size={{xs: 13, xl: 8}}>
+        <Grid size={{ xs: 13, xl: 8 }}>
           <Box
             sx={{
               p: 2,
@@ -29,14 +33,22 @@ const ProductsConditions = ({ productIds, groupIds, termIds }) => {
             }}
           >
             <Grid container spacing={2} columns={13} alignItems="center">
-              <Grid size={{xs: 13, md: 6}}>
-                <Condition title="Produkt ma grupy:" entityKey="groups" items={groupIds} />
+              <Grid size={{ xs: 13, md: 6 }}>
+                <Condition
+                  title="Produkt ma grupy:"
+                  entityKey="groups"
+                  items={groupIds}
+                />
               </Grid>
-              <Grid size={{xs: 13, md: 1}}>
+              <Grid size={{ xs: 13, md: 1 }}>
                 <LogicSeparator separator="i" />
               </Grid>
-              <Grid size={{xs: 13, md: 6}}>
-                <Condition title="Produkt ma termy:"  entityKey="terms" items={termIds} />
+              <Grid size={{ xs: 13, md: 6 }}>
+                {/* <Condition
+                  title="Produkt ma termy:"
+                  entityKey="terms"
+                  items={termIds}
+                /> */}
               </Grid>
             </Grid>
           </Box>
