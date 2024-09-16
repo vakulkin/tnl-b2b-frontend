@@ -5,7 +5,7 @@ import {
   useQueryClient,
   useQueries,
 } from "@tanstack/react-query";
-import { getEntityStore } from "./store";
+// import { getEntityStore } from "./store";
 
 const BASE_URL = "http://btwob.local/wp-json/tnl-b2b/v1";
 
@@ -21,7 +21,7 @@ const apiRequest = async (method, url, data = null) => {
 
 // Create API URL based on subPath provided
 const createApiUrl = (entityName, subPath = "") => {
-  return `${BASE_URL}/${entityName}/${subPath}`;
+  return `${BASE_URL}/${entityName}${subPath ? `/${subPath}` : ""}`;
 };
 
 const useGenericQuery = (queryKey, queryFn, enabled = true) =>
@@ -35,8 +35,8 @@ const useGenericQuery = (queryKey, queryFn, enabled = true) =>
   });
 
 export const useManagement = (entityName) => {
-  const useStore = getEntityStore(entityName);
-  const { handleFormDialogOpen } = useStore();
+  // const useStore = getEntityStore(entityName);
+  // const { handleFormDialogOpen } = useStore();
 
   const apiUrl = (subPath) => createApiUrl(entityName, subPath);
 
@@ -87,11 +87,11 @@ export const useManagement = (entityName) => {
 
   const createMutation = useGenericMutation(
     (newEntity) => apiRequest("post", apiUrl(), newEntity),
-    (data) => {
-      if (data?.[0]?.id) {
-        handleFormDialogOpen('link', data.id, 'logic_blocks');
-      }
-    }
+    // (data) => {
+    //   if (data?.[0]?.id) {
+    //     handleFormDialogOpen('link', data.id, 'logic_blocks');
+    //   }
+    // }
   );
 
   const updateMutation = useGenericMutation((updatedEntity) =>

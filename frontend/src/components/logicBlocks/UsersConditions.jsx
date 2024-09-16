@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Condition from "./Condition";
 import LogicSeparator from "./LogicSeparator";
 
-const UsersConditions = ({ userIds, roleIds }) => {
+const UsersConditions = ({ userIds, roleIds, logicBlock }) => {
   return (
     <Box
       sx={{
@@ -15,21 +15,23 @@ const UsersConditions = ({ userIds, roleIds }) => {
     >
       <Grid container spacing={2} columns={14} alignItems="center">
         <Grid size={{ xs: 14, xl: 6 }}>
-          {/* <Condition
+          <Condition
             title="Użytkownik to:"
-            entityKey="users"
+            entityKey="condition_users"
             items={userIds}
-          /> */}
+            logicBlock={logicBlock}
+          />
         </Grid>
         <Grid size={{ xs: 14, xl: 2 }}>
           <LogicSeparator separator="lub" />
         </Grid>
         <Grid size={{ xs: 14, xl: 6 }}>
-          <Condition
+          {/* <Condition
             title="Użytkownik ma role:"
-            entityKey="roles"
+            entityKey="condition_roles"
             items={roleIds}
-          />
+            logicBlock={logicBlock}
+          /> */}
         </Grid>
       </Grid>
     </Box>
@@ -39,6 +41,10 @@ const UsersConditions = ({ userIds, roleIds }) => {
 UsersConditions.propTypes = {
   userIds: PropTypes.string,
   roleIds: PropTypes.string,
+  logicBlock: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })
 };
 
 export default UsersConditions;

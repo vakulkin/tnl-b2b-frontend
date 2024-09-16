@@ -4,10 +4,22 @@ import { getEntityStore } from "../../store";
 import EntityForm from "./EntityForm";
 import DeleteEntityForm from "./DeleteEntityForm";
 import EntityAttachForm from "./EntityAttachForm";
+import { useManagement } from "../../useManagement";
 
 const EditModal = ({ entityKey }) => {
   const useStore = getEntityStore(entityKey);
   const { formMode, isFormDialogOpen, handleFormDialogClose } = useStore();
+
+  const { useEntitiesQuery } = useManagement(entityKey);
+
+  const {
+    data: depsData,
+    isFetching: depsIsLoading,
+    error: depsError,
+  } = useEntitiesQuery("deps");
+
+  if (depsIsLoading) return "Loading...";
+  if (depsError) return "Error loading data.";
 
   const renderContent = () => {
     switch (formMode) {
@@ -17,7 +29,7 @@ const EditModal = ({ entityKey }) => {
       case "delete":
         return <DeleteEntityForm entityKey={entityKey} />;
       case "link":
-        return <EntityAttachForm entityKey={entityKey} />;
+        return <EntityAttachForm entityKey={entityKey} depsData={depsData} />;
       default:
         return null;
     }

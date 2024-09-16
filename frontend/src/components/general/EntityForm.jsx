@@ -1,9 +1,14 @@
 import PropTypes from "prop-types";
 import { Formik, Form, Field } from "formik";
-import { DialogActions, Button, TextField, DialogTitle, DialogContent } from "@mui/material";
+import {
+  DialogActions,
+  Button,
+  TextField,
+  DialogTitle,
+  DialogContent,
+} from "@mui/material";
 import { getEntityStore } from "../../store";
 import { useManagement } from "../../useManagement";
-
 
 const EntityForm = ({ entityKey }) => {
   const useStore = getEntityStore(entityKey);
@@ -27,13 +32,13 @@ const EntityForm = ({ entityKey }) => {
 
   const initialValues = createOrUdate
     ? fieldsList.reduce((acc, key) => {
-      acc[key] = "";
-      return acc;
-    }, {})
+        acc[key] = "";
+        return acc;
+      }, {})
     : fieldsList.reduce((acc, key) => {
-      acc[key] = entityData?.[0]?.[key] || "";
-      return acc;
-    }, {});
+        acc[key] = entityData?.[0]?.[key] || "";
+        return acc;
+      }, {});
 
   const handleSubmit = (values) => {
     if (createOrUdate) {
@@ -44,10 +49,10 @@ const EntityForm = ({ entityKey }) => {
   };
 
   return (
-
-    <>      <DialogTitle>
-      {formMode === "add" ? "Add Entity" : "Edit Entity"}
-    </DialogTitle>
+    <>
+      <DialogTitle>
+        {formMode === "add" ? "Add Entity" : "Edit Entity"}
+      </DialogTitle>
       <Formik
         onSubmit={handleSubmit}
         initialValues={initialValues}
@@ -79,7 +84,6 @@ const EntityForm = ({ entityKey }) => {
         )}
       </Formik>
     </>
-
   );
 };
 

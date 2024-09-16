@@ -11,28 +11,32 @@ import {
 import { getEntityStore } from "../../store";
 import { useManagement } from "../../useManagement";
 
-const EntityAttachForm = ({ entityKey }) => {
-  const useStore = getEntityStore(entityKey);
-  const { selectedEntityId, attachmentEntity, handleFormDialogClose } =
+const EntityAttachForm = ({ entityKey, depsData }) => {
+
+  console.log(entityKey);
+  console.log(depsData);
+  
+  const useStore = getEntityStore(depsData.dependent.route);
+  const { selectedEntityId, attachmentEntityKey, handleFormDialogClose } =
     useStore();
 
-  const { useEntityQuery } = useManagement(entityKey);
+  const { useEntityQuery } = useManagement(depsData.dependent.route);
   const {
     data: entityData,
-    isLoading: entityIsLoading,
+    isFetching: entityIsLoading,
     error: entityError,
   } = useEntityQuery(selectedEntityId, "joined");
 
   const { useEntitiesQuery: useEntitiesQueryAttachments } =
-    useManagement(attachmentEntity);
+    useManagement(attachmentEntityKey);
   const {
     data: attachmentsData,
-    isLoading: attachmentsIsLoading,
+    isFetching: attachmentsIsLoading,
     error: attachmentsError,
-  } = useEntitiesQueryAttachments("joined");
+  } = useEntitiesQueryAttachments("simple");
 
   const { createMutation, deleteMutation } = useManagement(
-    "rule_block_relations"
+    depsData[entityKey].relation.route
   );
 
   // Handle loading and error states
@@ -40,7 +44,7 @@ const EntityAttachForm = ({ entityKey }) => {
   if (entityError || attachmentsError) return "Error loading data.";
 
   const attachedIds = entityData
-    ? JSON.parse(entityData?.[0]?.logic_blocks || "[]")
+    ? JSON.parse(entityData?.[0]?.[entityKey] || "[]")
     : [];
 
   const handleCheckboxChange = (e, item) => {
@@ -60,7 +64,7 @@ const EntityAttachForm = ({ entityKey }) => {
     } else {
       const elementToDelete = attachedIds.find((elem) => elem.rk === item.id);
       if (elementToDelete) {
-        deleteMutation.mutate(elementToDelete.tempk, {
+        deleteMutation.mutate(elementToDelete.pk, {
           onError: (error) => {
             console.error("Error deleting relation:", error);
           },
@@ -69,8 +73,9 @@ const EntityAttachForm = ({ entityKey }) => {
     }
   };
 
-  // Memoizing checkedIds for better performance
   const checkedIds = attachedIds.map((item) => item.rk);
+
+  console.log(depsData);
 
   return (
     <>
@@ -98,6 +103,7 @@ const EntityAttachForm = ({ entityKey }) => {
 
 EntityAttachForm.propTypes = {
   entityKey: PropTypes.string.isRequired,
+  depsData: PropTypes.object.isRequired,
 };
 
 export default EntityAttachForm;

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Condition from "./Condition";
 import LogicSeparator from "./LogicSeparator";
 
-const ProductsConditions = ({ productIds, groupIds, termIds }) => {
+const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
   return (
     <Box
       sx={{
@@ -15,11 +15,12 @@ const ProductsConditions = ({ productIds, groupIds, termIds }) => {
     >
       <Grid container spacing={2} columns={13} alignItems="center">
         <Grid size={{ xs: 13, xl: 4 }}>
-          {/* <Condition
+          <Condition
             title="Produkt to:"
-            entityKey="products"
+            entityKey="condition_products"
             items={productIds}
-          /> */}
+            logicBlock={logicBlock}
+          />
         </Grid>
         <Grid size={{ xs: 13, xl: 1 }}>
           <LogicSeparator separator="lub" />
@@ -36,19 +37,21 @@ const ProductsConditions = ({ productIds, groupIds, termIds }) => {
               <Grid size={{ xs: 13, md: 6 }}>
                 <Condition
                   title="Produkt ma grupy:"
-                  entityKey="groups"
+                  entityKey="condition_groups"
                   items={groupIds}
+                  logicBlock={logicBlock}
                 />
               </Grid>
               <Grid size={{ xs: 13, md: 1 }}>
                 <LogicSeparator separator="i" />
               </Grid>
               <Grid size={{ xs: 13, md: 6 }}>
-                {/* <Condition
+                <Condition
                   title="Produkt ma termy:"
-                  entityKey="terms"
+                  entityKey="condition_terms"
                   items={termIds}
-                /> */}
+                  logicBlock={logicBlock}
+                />
               </Grid>
             </Grid>
           </Box>
@@ -62,6 +65,10 @@ ProductsConditions.propTypes = {
   productIds: PropTypes.string,
   groupIds: PropTypes.string,
   termIds: PropTypes.string,
+  logicBlock: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })
 };
 
 export default ProductsConditions;

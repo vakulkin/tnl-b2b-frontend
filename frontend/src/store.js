@@ -12,13 +12,13 @@ const formDialogHandlers = (set) => ({
   handleFormDialogOpen: (
     formMode,
     entityId = null,
-    attachmentEntity = null
+    attachmentEntityKey = null
   ) => {
     set({
       formMode,
       selectedEntityId: entityId,
       isFormDialogOpen: true,
-      attachmentEntity: attachmentEntity,
+      attachmentEntityKey: attachmentEntityKey,
     });
   },
   handleFormDialogClose: () => {
@@ -26,7 +26,7 @@ const formDialogHandlers = (set) => ({
       formMode: null,
       selectedEntityId: null,
       isFormDialogOpen: false,
-      attachmentEntity: null,
+      attachmentEntityKey: null,
     });
   },
 });

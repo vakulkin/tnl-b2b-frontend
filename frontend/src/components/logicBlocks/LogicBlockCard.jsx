@@ -23,6 +23,7 @@ const LogicBlockCard = ({ logicBlock }) => {
           <UsersConditions
             userIds={logicBlock.condition_users}
             roleIds={logicBlock.condition_roles}
+            logicBlock={logicBlock}
           />
         </Grid>
 
@@ -31,11 +32,12 @@ const LogicBlockCard = ({ logicBlock }) => {
         </Grid>
 
         <Grid size={{ xs: 25, lg: 16, xl: 15 }}>
-          <ProductsConditions
+          {/* <ProductsConditions
             productIds={logicBlock.condition_products}
             groupIds={logicBlock.condition_groups}
             termIds={logicBlock.condition_terms}
-          />
+            logicBlock={logicBlock}
+          /> */}
         </Grid>
       </Grid>
     </Box>
