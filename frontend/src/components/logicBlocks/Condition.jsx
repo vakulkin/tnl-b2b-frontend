@@ -1,24 +1,14 @@
 import { Box, Typography, Stack, Chip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
-import { useManagement } from "../../useManagement";
 import { getEntityStore } from "../../store";
 
 const Condition = ({ title, entityKey, items, logicBlock }) => {
+
   const useStore = getEntityStore("logic_blocks");
   const { handleFormDialogOpen } = useStore();
 
   const itemsIds = items ? JSON.parse(items) : [];
-
-  const attachedIds = itemsIds.map((item) => item.rk);
-
-  const { useEntitiesQueries } = useManagement('users');
-  const itemsQueries = useEntitiesQueries(attachedIds, "joined");
-  const itemsIsLoading = itemsQueries.some((query) => query.isLoading);
-
-  if (itemsQueries.some((query) => query.isError)) {
-    return <p>Error loading items {items}</p>;
-  }
 
   return (
     <Box
@@ -29,16 +19,12 @@ const Condition = ({ title, entityKey, items, logicBlock }) => {
         boxShadow: "rgba(0, 0, 0, 0.04) 0px 2px 4px",
       }}
     >
-      {JSON.stringify(entityKey)}
-      {"______________"}
-      {JSON.stringify(items)}
-      {"______________"}
-      {JSON.stringify(logicBlock)}
       <Typography
         variant="body2"
         sx={{ fontSize: 16, mb: 1, color: "#2C3E50" }}
       >
-        {title}
+        {title} {JSON.stringify(itemsIds)}
+        {JSON.stringify([logicBlock.id, entityKey])}
       </Typography>
       <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
         <Chip
@@ -46,16 +32,13 @@ const Condition = ({ title, entityKey, items, logicBlock }) => {
           label="Dodaj"
           variant="outlined"
           size="small"
-          onClick={() =>
-            handleFormDialogOpen("link", logicBlock.id, entityKey)
-          }
+          onClick={() => handleFormDialogOpen("link", logicBlock.id, entityKey)}
         />
-        {itemsQueries.map((query, index) => {
-          const name = itemsIsLoading ? "..." : query.data[0]?.name;
+        {itemsIds.map((item) => {
           return (
             <Chip
-              key={index}
-              label={`${itemsIds[index].pk}. ${name}`}
+              key={item.pk}
+              label={item.pk}
               variant="outlined"
               size="small"
             />

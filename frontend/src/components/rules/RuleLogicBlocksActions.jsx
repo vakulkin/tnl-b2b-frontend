@@ -19,13 +19,13 @@ const RuleLogicBlocksActions = ({ rule }) => {
     <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
       <ActionButton
         icon={<AddLinkIcon />}
-        label={`Link logic blocks`}
+        label="Link logic blocks"
         ariaLabel="link"
         onClick={() => handleFormDialogOpenRules("link", rule.id, "logic_blocks")}
       />
       <ActionButton
         icon={<AddCircleOutlineIcon />}
-        label={`Add logic block`}
+        label="Add logic block"
         ariaLabel="add"
         onClick={() => handleFormDialogOpenLogicBlocks("add")}
       />

@@ -57,38 +57,41 @@ export const useLogicBlocksStore = getEntityStore(
   "logic_blocks",
   formDialogHandlers
 );
-export const useConditionUsersStore = getEntityStore(
-  "condition_users",
+export const useUserRoleRelationsStore = getEntityStore(
+  "user_role_relations",
   formDialogHandlers
 );
-export const useConditionProductsStore = getEntityStore(
-  "condition_products",
-  formDialogHandlers
-);
-export const useConditionRolesStore = getEntityStore(
-  "condition_roles",
-  formDialogHandlers
-);
-export const useConditionGroupsStore = getEntityStore(
-  "condition_groups",
-  formDialogHandlers
-);
-export const useConditionTermsStore = getEntityStore(
-  "condition_terms",
+export const useBlockConditionUsersRelationsStore = getEntityStore(
+  "product_group_relations",
   formDialogHandlers
 );
 export const useRuleBlockRelations = getEntityStore(
   "rule_block_relations",
   formDialogHandlers
 );
-export const useBlockConditionUsersRelationsStore = getEntityStore(
-  "block_condition_users_relations",
+export const useConditionUsersStore = getEntityStore(
+  "block_user_relations",
   formDialogHandlers
 );
-export const useUserRoleRelationsStore = getEntityStore(
-  "user_role_relations",
+export const useConditionProductsStore = getEntityStore(
+  "block_product_relations",
   formDialogHandlers
 );
+export const useConditionRolesStore = getEntityStore(
+  "block_role_relations",
+  formDialogHandlers
+);
+export const useConditionGroupsStore = getEntityStore(
+  "block_groups_relations",
+  formDialogHandlers
+);
+export const useConditionTermsStore = getEntityStore(
+  "block_terms_relations",
+  formDialogHandlers
+);
+
+
+
 
 // Example entity stores without form dialog handlers
 export const useProductsStore = getEntityStore("products", formDialogHandlers);

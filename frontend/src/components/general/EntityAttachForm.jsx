@@ -12,15 +12,11 @@ import { getEntityStore } from "../../store";
 import { useManagement } from "../../useManagement";
 
 const EntityAttachForm = ({ entityKey, depsData }) => {
-
-  console.log(entityKey);
-  console.log(depsData);
-  
-  const useStore = getEntityStore(depsData.dependent.route);
+  const useStore = getEntityStore(entityKey);
   const { selectedEntityId, attachmentEntityKey, handleFormDialogClose } =
     useStore();
 
-  const { useEntityQuery } = useManagement(depsData.dependent.route);
+  const { useEntityQuery } = useManagement(entityKey);
   const {
     data: entityData,
     isFetching: entityIsLoading,
@@ -36,7 +32,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   } = useEntitiesQueryAttachments("simple");
 
   const { createMutation, deleteMutation } = useManagement(
-    depsData[entityKey].relation.route
+    depsData[attachmentEntityKey].relation.route
   );
 
   // Handle loading and error states
@@ -44,17 +40,15 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   if (entityError || attachmentsError) return "Error loading data.";
 
   const attachedIds = entityData
-    ? JSON.parse(entityData?.[0]?.[entityKey] || "[]")
+    ? JSON.parse(entityData?.[0]?.[attachmentEntityKey] || "[]")
     : [];
 
   const handleCheckboxChange = (e, item) => {
     if (e.target.checked) {
       const newEntity = {
-        rule_id: selectedEntityId, // Mapping rule ID
-        block_id: item.id, // Mapping block ID
-        // Comments retained: Placeholder for possible dynamic key mappings
-        // [dependency.relation.foreign_key_1]: selectedEntityId,
-        // [dependency.relation.foreign_key_2]: item.id,
+        [depsData[attachmentEntityKey].relation.foreign_key_1]:
+          selectedEntityId,
+        [depsData[attachmentEntityKey].relation.foreign_key_2]: item.id,
       };
       createMutation.mutate(newEntity, {
         onError: (error) => {
@@ -62,9 +56,11 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
         },
       });
     } else {
-      const elementToDelete = attachedIds.find((elem) => elem.rk === item.id);
+      const elementToDelete = attachedIds.find(
+        (elem) => elem.pk === item.id
+      );
       if (elementToDelete) {
-        deleteMutation.mutate(elementToDelete.pk, {
+        deleteMutation.mutate(elementToDelete.tempk, {
           onError: (error) => {
             console.error("Error deleting relation:", error);
           },
@@ -73,9 +69,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     }
   };
 
-  const checkedIds = attachedIds.map((item) => item.rk);
-
-  console.log(depsData);
+  const checkedIds = attachedIds.map((item) => item.pk);
 
   return (
     <>

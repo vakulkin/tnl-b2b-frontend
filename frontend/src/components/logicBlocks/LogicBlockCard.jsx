@@ -21,8 +21,8 @@ const LogicBlockCard = ({ logicBlock }) => {
       <Grid container spacing={2} columns={25} alignItems="center">
         <Grid size={{ xs: 25, lg: 8, xl: 9 }}>
           <UsersConditions
-            userIds={logicBlock.condition_users}
-            roleIds={logicBlock.condition_roles}
+            userIds={logicBlock.users}
+            roleIds={logicBlock.roles}
             logicBlock={logicBlock}
           />
         </Grid>
@@ -32,12 +32,12 @@ const LogicBlockCard = ({ logicBlock }) => {
         </Grid>
 
         <Grid size={{ xs: 25, lg: 16, xl: 15 }}>
-          {/* <ProductsConditions
-            productIds={logicBlock.condition_products}
-            groupIds={logicBlock.condition_groups}
-            termIds={logicBlock.condition_terms}
+          <ProductsConditions
+            productIds={logicBlock.products}
+            groupIds={logicBlock.groups}
+            termIds={logicBlock.terms}
             logicBlock={logicBlock}
-          /> */}
+          />
         </Grid>
       </Grid>
     </Box>
@@ -48,11 +48,11 @@ LogicBlockCard.propTypes = {
   logicBlock: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    condition_users: PropTypes.string,
-    condition_roles: PropTypes.string,
-    condition_products: PropTypes.string,
-    condition_groups: PropTypes.string,
-    condition_terms: PropTypes.string,
+    users: PropTypes.string,
+    roles: PropTypes.string,
+    products: PropTypes.string,
+    groups: PropTypes.string,
+    terms: PropTypes.string,
   }).isRequired,
 };
 

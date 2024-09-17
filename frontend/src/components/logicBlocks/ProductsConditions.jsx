@@ -17,7 +17,7 @@ const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
         <Grid size={{ xs: 13, xl: 4 }}>
           <Condition
             title="Produkt to:"
-            entityKey="condition_products"
+            entityKey="products"
             items={productIds}
             logicBlock={logicBlock}
           />
@@ -37,7 +37,7 @@ const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
               <Grid size={{ xs: 13, md: 6 }}>
                 <Condition
                   title="Produkt ma grupy:"
-                  entityKey="condition_groups"
+                  entityKey="groups"
                   items={groupIds}
                   logicBlock={logicBlock}
                 />
@@ -48,7 +48,7 @@ const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
               <Grid size={{ xs: 13, md: 6 }}>
                 <Condition
                   title="Produkt ma termy:"
-                  entityKey="condition_terms"
+                  entityKey="terms"
                   items={termIds}
                   logicBlock={logicBlock}
                 />

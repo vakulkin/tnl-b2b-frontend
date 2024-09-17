@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import PageHeader from "../../components/general/PageHeader";
-import LogicBlockCard from "../../components/logicBlocks/LogicBlockCard";
+import LogicBlockCard from "../../components/logicBlocks/logicBlockCard";
 import EditModal from "../../components/general/EditModal";
 
 const LogicBlocks = () => {
@@ -29,7 +29,6 @@ const LogicBlocks = () => {
 
 export default LogicBlocks;
 
-// Export the Route for routing purposes
 export const Route = createFileRoute("/logic-blocks/")({
   component: () => <LogicBlocks />,
 });

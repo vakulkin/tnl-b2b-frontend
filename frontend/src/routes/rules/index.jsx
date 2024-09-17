@@ -23,11 +23,11 @@ const Rules = () => {
         ))}
         <EditModal entityKey={entityKey} />
         <EditModal entityKey="logic_blocks" />
-        <EditModal entityKey="condition_users" />
-        <EditModal entityKey="condition_roles" />
-        <EditModal entityKey="condition_products" />
-        <EditModal entityKey="condition_terms" />
-        <EditModal entityKey="condition_groups" />
+        <EditModal entityKey="products" />
+        <EditModal entityKey="users" />
+        <EditModal entityKey="terms" />
+        <EditModal entityKey="roles" />
+        <EditModal entityKey="groups" />
       </Box>
     </>
   );

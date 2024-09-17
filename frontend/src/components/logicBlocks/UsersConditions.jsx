@@ -17,7 +17,7 @@ const UsersConditions = ({ userIds, roleIds, logicBlock }) => {
         <Grid size={{ xs: 14, xl: 6 }}>
           <Condition
             title="Użytkownik to:"
-            entityKey="condition_users"
+            entityKey="users"
             items={userIds}
             logicBlock={logicBlock}
           />
@@ -26,12 +26,12 @@ const UsersConditions = ({ userIds, roleIds, logicBlock }) => {
           <LogicSeparator separator="lub" />
         </Grid>
         <Grid size={{ xs: 14, xl: 6 }}>
-          {/* <Condition
+          <Condition
             title="Użytkownik ma role:"
-            entityKey="condition_roles"
+            entityKey="roles"
             items={roleIds}
             logicBlock={logicBlock}
-          /> */}
+          />
         </Grid>
       </Grid>
     </Box>

@@ -13,13 +13,13 @@ const CardActions = ({ entityKey, entity }) => {
     <Box sx={{ display: "flex", gap: 2 }}>
       <ActionButton
         icon={<EditOutlinedIcon />}
-        label={`Edit ${entityKey}`}
+        label="Edytuj"
         ariaLabel="edit"
         onClick={() => handleFormDialogOpen("edit", entity.id)}
       />
       <ActionButton
         icon={<DeleteOutlineOutlinedIcon />}
-        label={`Delete ${entityKey}`}
+        label="Usuń"
         ariaLabel="delete"
         onClick={() => handleFormDialogOpen("delete", entity.id)}
       />
