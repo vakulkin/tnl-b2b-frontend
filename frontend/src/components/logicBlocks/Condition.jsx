@@ -3,12 +3,12 @@ import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
 import { getEntityStore } from "../../store";
 
-const Condition = ({ title, entityKey, items, logicBlock }) => {
+const Condition = ({ title, entityKey, logicBlock }) => {
 
   const useStore = getEntityStore("logic_blocks");
   const { handleFormDialogOpen } = useStore();
 
-  const itemsIds = items ? JSON.parse(items) : [];
+  const itemsIds = logicBlock[entityKey] ? JSON.parse(logicBlock[entityKey]) : [];
 
   return (
     <Box
@@ -23,8 +23,7 @@ const Condition = ({ title, entityKey, items, logicBlock }) => {
         variant="body2"
         sx={{ fontSize: 16, mb: 1, color: "#2C3E50" }}
       >
-        {title} {JSON.stringify(itemsIds)}
-        {JSON.stringify([logicBlock.id, entityKey])}
+        {title}
       </Typography>
       <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
         <Chip
@@ -37,8 +36,8 @@ const Condition = ({ title, entityKey, items, logicBlock }) => {
         {itemsIds.map((item) => {
           return (
             <Chip
-              key={item.pk}
-              label={item.pk}
+              key={item.primary_id}
+              label={`${item.primary_id} ${item.name}`}
               variant="outlined"
               size="small"
             />

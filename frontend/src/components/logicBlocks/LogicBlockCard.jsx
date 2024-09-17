@@ -21,8 +21,6 @@ const LogicBlockCard = ({ logicBlock }) => {
       <Grid container spacing={2} columns={25} alignItems="center">
         <Grid size={{ xs: 25, lg: 8, xl: 9 }}>
           <UsersConditions
-            userIds={logicBlock.users}
-            roleIds={logicBlock.roles}
             logicBlock={logicBlock}
           />
         </Grid>
@@ -33,9 +31,6 @@ const LogicBlockCard = ({ logicBlock }) => {
 
         <Grid size={{ xs: 25, lg: 16, xl: 15 }}>
           <ProductsConditions
-            productIds={logicBlock.products}
-            groupIds={logicBlock.groups}
-            termIds={logicBlock.terms}
             logicBlock={logicBlock}
           />
         </Grid>

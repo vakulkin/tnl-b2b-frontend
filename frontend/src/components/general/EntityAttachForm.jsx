@@ -57,10 +57,10 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
       });
     } else {
       const elementToDelete = attachedIds.find(
-        (elem) => elem.pk === item.id
+        (elem) => elem.primary_id === item.id
       );
       if (elementToDelete) {
-        deleteMutation.mutate(elementToDelete.tempk, {
+        deleteMutation.mutate(elementToDelete.relation_id, {
           onError: (error) => {
             console.error("Error deleting relation:", error);
           },
@@ -69,7 +69,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     }
   };
 
-  const checkedIds = attachedIds.map((item) => item.pk);
+  const checkedIds = attachedIds.map((item) => item.primary_id);
 
   return (
     <>

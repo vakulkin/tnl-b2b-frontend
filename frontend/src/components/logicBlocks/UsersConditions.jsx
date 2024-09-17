@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Condition from "./Condition";
 import LogicSeparator from "./LogicSeparator";
 
-const UsersConditions = ({ userIds, roleIds, logicBlock }) => {
+const UsersConditions = ({ logicBlock }) => {
   return (
     <Box
       sx={{
@@ -18,7 +18,7 @@ const UsersConditions = ({ userIds, roleIds, logicBlock }) => {
           <Condition
             title="Użytkownik to:"
             entityKey="users"
-            items={userIds}
+
             logicBlock={logicBlock}
           />
         </Grid>
@@ -29,7 +29,6 @@ const UsersConditions = ({ userIds, roleIds, logicBlock }) => {
           <Condition
             title="Użytkownik ma role:"
             entityKey="roles"
-            items={roleIds}
             logicBlock={logicBlock}
           />
         </Grid>

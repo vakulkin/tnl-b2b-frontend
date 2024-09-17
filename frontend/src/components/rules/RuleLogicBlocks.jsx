@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import RenderIfVisible from "react-render-if-visible";
-import LogicBlockCard from "../logicBlocks/logicBlockCard";
+import LogicBlockCard from "../logicBlocks/LogicBlockCard";
 import RuleLogicBlocksActions from "./RuleLogicBlocksActions";
 
 const LogicBlocksContainer = ({ rule }) => {
@@ -13,7 +13,7 @@ const LogicBlocksContainer = ({ rule }) => {
     : [];
 
   const { useEntitiesQueries } = useManagement(entityKey);
-  const logicBlocksQueries = useEntitiesQueries(logicBlockIds.map(item => item.pk), "joined");
+  const logicBlocksQueries = useEntitiesQueries(logicBlockIds.map(item => item.primary_id), "joined");
 
   if (logicBlocksQueries.some((query) => query.isLoading)) {
     return <p>Loading logic blocks...</p>;
@@ -26,7 +26,7 @@ const LogicBlocksContainer = ({ rule }) => {
   return (
     <Box>
       {logicBlocksQueries.map((query, index) => (
-        <RenderIfVisible key={logicBlockIds[index].pk} defaultHeight={50}>
+        <RenderIfVisible key={logicBlockIds[index].primary_id} defaultHeight={50}>
           {query.data ? <LogicBlockCard logicBlock={query.data[0]} /> : null}
         </RenderIfVisible>
       ))}

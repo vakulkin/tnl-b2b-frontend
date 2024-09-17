@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Condition from "./Condition";
 import LogicSeparator from "./LogicSeparator";
 
-const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
+const ProductsConditions = ({ logicBlock }) => {
   return (
     <Box
       sx={{
@@ -18,7 +18,6 @@ const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
           <Condition
             title="Produkt to:"
             entityKey="products"
-            items={productIds}
             logicBlock={logicBlock}
           />
         </Grid>
@@ -38,7 +37,6 @@ const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
                 <Condition
                   title="Produkt ma grupy:"
                   entityKey="groups"
-                  items={groupIds}
                   logicBlock={logicBlock}
                 />
               </Grid>
@@ -49,7 +47,6 @@ const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
                 <Condition
                   title="Produkt ma termy:"
                   entityKey="terms"
-                  items={termIds}
                   logicBlock={logicBlock}
                 />
               </Grid>
@@ -62,13 +59,10 @@ const ProductsConditions = ({ productIds, groupIds, termIds, logicBlock }) => {
 };
 
 ProductsConditions.propTypes = {
-  productIds: PropTypes.string,
-  groupIds: PropTypes.string,
-  termIds: PropTypes.string,
   logicBlock: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-  })
+  }),
 };
 
 export default ProductsConditions;
