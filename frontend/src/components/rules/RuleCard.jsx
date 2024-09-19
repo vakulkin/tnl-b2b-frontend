@@ -10,6 +10,7 @@ const RuleCard = ({ rule }) => {
       sx={{
         mb: 8,
         p: 4,
+        pb: 3,
         background: "linear-gradient(135deg, #f7fdff, #d9f3f8)",
         borderRadius: 8,
       }}

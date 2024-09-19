@@ -2,6 +2,7 @@ import { Box, Typography, Stack, Chip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
 import { getEntityStore } from "../../store";
+import EmptyCondition from "./EmptyCondition";
 
 const Condition = ({ title, entityKey, logicBlock }) => {
 
@@ -9,6 +10,8 @@ const Condition = ({ title, entityKey, logicBlock }) => {
   const { handleFormDialogOpen } = useStore();
 
   const itemsIds = logicBlock[entityKey] ? JSON.parse(logicBlock[entityKey]) : [];
+
+  if (!itemsIds.length) return <EmptyCondition entityKey={entityKey} logicBlock={logicBlock} />
 
   return (
     <Box
