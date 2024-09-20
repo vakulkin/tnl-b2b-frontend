@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import PageHeader from "../../components/general/PageHeader";
 import LogicBlockCard from "../../components/logicBlocks/logicBlockCard";
-import EditModal from "../../components/general/EditModal";
+import EditModal from "../../components/general/Modal/EditModal";
 
 const LogicBlocks = () => {
   const entityKey = "logic_blocks";

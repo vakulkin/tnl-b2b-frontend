@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import PageHeader from "../../components/general/PageHeader";
 import RuleCard from "../../components/rules/RuleCard";
-import EditModal from "../../components/general/EditModal";
+import EditModal from "../../components/general/Modal/EditModal";
 
 const Rules = () => {
   const entityKey = "rules";
