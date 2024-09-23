@@ -3,12 +3,12 @@ import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
 import { getEntityStore } from "../../store";
 
-const Condition = ({ title, entityKey, logicBlock }) => {
+const CardAttacments = ({ entityKey, entity, attachmentEntityKey }) => {
 
-  const useStore = getEntityStore("logic_blocks");
+  const useStore = getEntityStore(entityKey);
   const { handleFormDialogOpen } = useStore();
 
-  const itemsIds = logicBlock[entityKey] ? JSON.parse(logicBlock[entityKey]) : [];
+  const itemsIds = entity[attachmentEntityKey] ? JSON.parse(entity[attachmentEntityKey]) : [];
 
   return (
     <Box
@@ -23,7 +23,7 @@ const Condition = ({ title, entityKey, logicBlock }) => {
         variant="body2"
         sx={{ fontSize: 16, mb: 1, color: "#2C3E50" }}
       >
-        {title}
+        {attachmentEntityKey}
       </Typography>
       <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
         <Chip
@@ -31,7 +31,7 @@ const Condition = ({ title, entityKey, logicBlock }) => {
           label="Dodaj"
           variant="outlined"
           size="small"
-          onClick={() => handleFormDialogOpen("link", logicBlock.id, entityKey)}
+          onClick={() => handleFormDialogOpen("link", entity.id, attachmentEntityKey)}
         />
         {itemsIds.map((item) => {
           return (
@@ -48,13 +48,13 @@ const Condition = ({ title, entityKey, logicBlock }) => {
   );
 };
 
-Condition.propTypes = {
-  title: PropTypes.string.isRequired,
+CardAttacments.propTypes = {
   entityKey: PropTypes.string.isRequired,
-  logicBlock: PropTypes.shape({
+  entity: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }),
+  attachmentEntityKey: PropTypes.string.isRequired,
 };
 
-export default Condition;
+export default CardAttacments;

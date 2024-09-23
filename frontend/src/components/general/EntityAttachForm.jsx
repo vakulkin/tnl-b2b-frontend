@@ -46,8 +46,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   const handleCheckboxChange = (e, item) => {
     if (e.target.checked) {
       const newEntity = {
-        [depsData[attachmentEntityKey].relation.foreign_key_1]:
-          selectedEntityId,
+        [depsData[attachmentEntityKey].relation.foreign_key_1]: selectedEntityId,
         [depsData[attachmentEntityKey].relation.foreign_key_2]: item.id,
       };
       createMutation.mutate(newEntity, {

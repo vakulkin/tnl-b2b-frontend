@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import PropTypes from "prop-types";
-import Condition from "./Condition";
 import LogicSeparator from "./LogicSeparator";
+import CardAttacments from "../cards/CardAttacments";
 
 const ProductsConditions = ({ logicBlock }) => {
   return (
@@ -15,10 +15,10 @@ const ProductsConditions = ({ logicBlock }) => {
     >
       <Grid container spacing={2} columns={13} alignItems="center">
         <Grid size={{ xs: 13, xl: 4 }}>
-          <Condition
-            title="Produkt to:"
-            entityKey="products"
-            logicBlock={logicBlock}
+          <CardAttacments
+            entityKey="logic_blocks"
+            entity={logicBlock}
+            attachmentEntityKey="products"
           />
         </Grid>
         <Grid size={{ xs: 13, xl: 1 }}>
@@ -34,20 +34,20 @@ const ProductsConditions = ({ logicBlock }) => {
           >
             <Grid container spacing={2} columns={13} alignItems="center">
               <Grid size={{ xs: 13, md: 6 }}>
-                <Condition
-                  title="Produkt ma grupy:"
-                  entityKey="groups"
-                  logicBlock={logicBlock}
+                <CardAttacments
+                  entityKey="logic_blocks"
+                  entity={logicBlock}
+                  attachmentEntityKey="groups"
                 />
               </Grid>
               <Grid size={{ xs: 13, md: 1 }}>
                 <LogicSeparator separator="i" />
               </Grid>
               <Grid size={{ xs: 13, md: 6 }}>
-                <Condition
-                  title="Produkt ma termy:"
-                  entityKey="terms"
-                  logicBlock={logicBlock}
+                <CardAttacments
+                  entityKey="logic_blocks"
+                  entity={logicBlock}
+                  attachmentEntityKey="terms"
                 />
               </Grid>
             </Grid>

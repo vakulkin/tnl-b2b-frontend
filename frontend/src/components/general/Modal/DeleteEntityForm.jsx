@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { DialogActions, Button, Typography, DialogTitle, DialogContent } from "@mui/material";
-import { getEntityStore } from "../../store";
-import { useManagement } from "../../useManagement";
+import { getEntityStore } from "../../../store";
+import { useManagement } from "../../../useManagement";
 
 const DeleteEntityForm = ({ entityKey }) => {
   const useStore = getEntityStore(entityKey);

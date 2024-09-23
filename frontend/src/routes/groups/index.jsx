@@ -3,8 +3,9 @@ import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import PageHeader from "../../components/general/PageHeader";
 import EditModal from "../../components/general/Modal/EditModal";
+import SingleCard from "../../components/cards/SingleCard";
 
-const Rules = () => {
+const Groups = () => {
   const entityKey = "groups";
 
   const { useEntitiesQuery } = useManagement(entityKey);
@@ -18,7 +19,12 @@ const Rules = () => {
       <Box sx={{ p: 4 }}>
         <PageHeader entityKey={entityKey} />
         {rolesData?.map((role) => (
-          <>{JSON.stringify(role)}</>
+          <SingleCard
+            key={role.id}
+            entityKey={entityKey}
+            entity={role}
+            attachmentEntityKey="products"
+          />
         ))}
         <EditModal entityKey={entityKey} />
       </Box>
@@ -26,9 +32,9 @@ const Rules = () => {
   );
 };
 
-export default Rules;
+export default Groups;
 
 // Export the Route for routing purposes
 export const Route = createFileRoute("/groups/")({
-  component: () => <Rules />,
+  component: () => <Groups />,
 });
