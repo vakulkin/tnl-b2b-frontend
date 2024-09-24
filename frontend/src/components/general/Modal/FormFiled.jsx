@@ -38,7 +38,7 @@ const FormField = ({ field, values, handleChange, errors, touched }) => {
             helperText={isError && errors[field.name]}
             fullWidth
             InputLabelProps={{
-              shrink: true, // Keep the label on top
+              shrink: true,
             }}
           />
         </>
