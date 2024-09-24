@@ -19,6 +19,7 @@ const apiRequest = async (method, url, data = null) => {
   }
 };
 
+// Create API URL based on subPath provided
 const createApiUrl = (entityName, subPath = "") => {
   return `${BASE_URL}/${entityName}${subPath ? `/${subPath}` : ""}`;
 };
@@ -71,25 +72,26 @@ export const useManagement = (entityName) => {
 
   const useGenericMutation = (mutationFn, onSuccessFn) => {
     const queryClient = useQueryClient();
-  
-    return useMutation(mutationFn, {
-      onSuccess: (data, variables, context) => {
+
+    return useMutation({
+      mutationFn,
+      onSuccess: (data) => {
         queryClient.invalidateQueries([mutationFn.queryKey]);
-        onSuccessFn?.(data, variables, context);
+        onSuccessFn?.(data);
       },
       onError: (error) => {
         console.error(`Error during mutation:`, error);
       },
     });
   };
-  
+
   const createMutation = useGenericMutation(
     (newEntity) => apiRequest("post", apiUrl(), newEntity),
-    (data) => {
-      if (data?.[0]?.id) {
-        // handleFormDialogOpen('link', data.id, 'logic_blocks');
-      }
-    }
+    // (data) => {
+    //   if (data?.[0]?.id) {
+    //     handleFormDialogOpen('link', data.id, 'logic_blocks');
+    //   }
+    // }
   );
 
   const updateMutation = useGenericMutation((updatedEntity) =>
