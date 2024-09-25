@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import {
+  Box,
   DialogActions,
   Button,
   DialogTitle,
@@ -8,20 +9,27 @@ import {
   Checkbox,
 } from "@mui/material";
 
-import { getEntityStore } from "../../store";
-import { useManagement } from "../../useManagement";
+import { getEntityStore } from "../../../store";
+import { useManagement } from "../../../useManagement";
+
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import ActionButton from "../ActionButton";
 
 const EntityAttachForm = ({ entityKey, depsData }) => {
   const useStore = getEntityStore(entityKey);
   const { selectedEntityId, attachmentEntityKey, handleFormDialogClose } =
     useStore();
 
-  const { useEntityQuery } = useManagement(entityKey);
+  const { useEntityQuery, useEntitiesQuery } = useManagement(entityKey);
+  
   const {
     data: entityData,
     isFetching: entityIsLoading,
     error: entityError,
   } = useEntityQuery(selectedEntityId, "joined");
+
+  const { data: infoData, isFetching: infoIsLoading } =
+  useEntitiesQuery("info");
 
   const { useEntitiesQuery: useEntitiesQueryAttachments } =
     useManagement(attachmentEntityKey);
@@ -35,8 +43,11 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     depsData[attachmentEntityKey].relation.route
   );
 
+  const useStoreLogicBlocks = getEntityStore("logic_blocks");
+  const { handleFormDialogOpen } = useStoreLogicBlocks();
+
   // Handle loading and error states
-  if (entityIsLoading || attachmentsIsLoading) return "Loading...";
+  if (entityIsLoading || attachmentsIsLoading || infoIsLoading) return "Loading...";
   if (entityError || attachmentsError) return "Error loading data.";
 
   const attachedIds = entityData
@@ -46,7 +57,8 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   const handleCheckboxChange = (e, item) => {
     if (e.target.checked) {
       const newEntity = {
-        [depsData[attachmentEntityKey].relation.foreign_key_1]: selectedEntityId,
+        [depsData[attachmentEntityKey].relation.foreign_key_1]:
+          selectedEntityId,
         [depsData[attachmentEntityKey].relation.foreign_key_2]: item.id,
       };
       createMutation.mutate(newEntity, {
@@ -72,7 +84,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
 
   return (
     <>
-      <DialogTitle>Attach Entity</DialogTitle>
+      <DialogTitle>Dolącz {infoData.entity_name_single}</DialogTitle>
       <DialogContent>
         {attachmentsData?.map((item) => (
           <FormControlLabel
@@ -86,9 +98,17 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
             label={`${item.id}. ${item.name}`}
           />
         ))}
+        <Box sx={{mt: 2, display: "flex", justifyContent: "center"}}>
+          <ActionButton
+            icon={<AddCircleOutlineIcon />}
+            label="Add logic block"
+            ariaLabel="add"
+            onClick={() => handleFormDialogOpen("add")}
+          />
+        </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleFormDialogClose}>Close</Button>
+        <Button onClick={handleFormDialogClose}>Zamknij</Button>
       </DialogActions>
     </>
   );

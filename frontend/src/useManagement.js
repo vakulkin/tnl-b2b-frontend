@@ -5,7 +5,7 @@ import {
   useQueryClient,
   useQueries,
 } from "@tanstack/react-query";
-// import { getEntityStore } from "./store";
+import { getEntityStore } from "./store";
 
 const BASE_URL = "http://btwob.local/wp-json/tnl-b2b/v1";
 
@@ -34,9 +34,25 @@ const useGenericQuery = (queryKey, queryFn, enabled = true) =>
     },
   });
 
+
+  const useGenericMutation = (mutationFn, onSuccessFn) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn,
+      onSuccess: (data, variables) => {
+        queryClient.invalidateQueries([mutationFn.queryKey]);
+        onSuccessFn?.(data, variables);
+      },
+      onError: (error) => {
+        console.error(`Error during mutation:`, error);
+      },
+    });
+  };
+
 export const useManagement = (entityName) => {
-  // const useStore = getEntityStore(entityName);
-  // const { handleFormDialogOpen } = useStore();
+  const useStore = getEntityStore(entityName);
+  const { handleFormDialogOpen } = useStore();
 
   const apiUrl = (subPath) => createApiUrl(entityName, subPath);
 
@@ -70,28 +86,13 @@ export const useManagement = (entityName) => {
     });
   };
 
-  const useGenericMutation = (mutationFn, onSuccessFn) => {
-    const queryClient = useQueryClient();
-
-    return useMutation({
-      mutationFn,
-      onSuccess: (data) => {
-        queryClient.invalidateQueries([mutationFn.queryKey]);
-        onSuccessFn?.(data);
-      },
-      onError: (error) => {
-        console.error(`Error during mutation:`, error);
-      },
-    });
-  };
-
   const createMutation = useGenericMutation(
     (newEntity) => apiRequest("post", apiUrl(), newEntity),
-    // (data) => {
-    //   if (data?.[0]?.id) {
-    //     handleFormDialogOpen('link', data.id, 'logic_blocks');
-    //   }
-    // }
+    (data, variables) => {
+      if (data?.[0]?.id && variables.attachmentKey) {
+        handleFormDialogOpen("link", data[0].id, variables.attachmentKey);
+      }
+    }
   );
 
   const updateMutation = useGenericMutation((updatedEntity) =>

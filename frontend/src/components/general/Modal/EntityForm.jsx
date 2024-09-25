@@ -25,7 +25,10 @@ const EntityForm = ({ entityKey }) => {
     "joined"
   );
 
-  if (formIsLoading || entityIsLoading) return "Loading...";
+  const { data: infoData, isFetching: infoIsLoading } =
+    useEntitiesQuery("info");
+
+  if (formIsLoading || entityIsLoading || infoIsLoading) return "Loading...";
 
   // Extract fields from JSON data
   const fieldsList = formData || [];
@@ -37,9 +40,11 @@ const EntityForm = ({ entityKey }) => {
     if (field.type === "select" && field.options && field.options.length > 0) {
       acc[field.name] = isCreateMode
         ? field.options[0]
-        : entityData?.[0]?.[field.name] ?? "";
+        : (entityData?.[0]?.[field.name] ?? "");
     } else {
-      acc[field.name] = isCreateMode ? "" : entityData?.[0]?.[field.name] ?? "";
+      acc[field.name] = isCreateMode
+        ? ""
+        : (entityData?.[0]?.[field.name] ?? "");
     }
     return acc;
   }, {});
@@ -49,7 +54,11 @@ const EntityForm = ({ entityKey }) => {
 
   return (
     <>
-      <DialogTitle>{isCreateMode ? "Add Entity" : "Edit Entity"}</DialogTitle>
+      <DialogTitle>
+        {isCreateMode
+          ? `Dodaj ${infoData.entity_name_single}`
+          : `Edytuj ${infoData.entity_name_single}`}
+      </DialogTitle>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -68,9 +77,9 @@ const EntityForm = ({ entityKey }) => {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleFormDialogClose}>Close</Button>
+              <Button onClick={handleFormDialogClose}>Zamknij</Button>
               <Button type="submit" variant="contained" color="primary">
-                {isCreateMode ? "Create" : "Update"}
+                {isCreateMode ? "Dodaj" : "Aktualizuj"}
               </Button>
             </DialogActions>
           </Form>
@@ -81,7 +90,10 @@ const EntityForm = ({ entityKey }) => {
 
   function handleSubmit(values) {
     if (isCreateMode) {
-      createMutation.mutate({ ...values });
+      createMutation.mutate({
+        attachmentKey: infoData.dependent_key,
+        ...values,
+      });
     } else {
       updateMutation.mutate({ id: selectedEntityId, ...values });
     }
@@ -99,25 +111,42 @@ const EntityForm = ({ entityKey }) => {
         const { rule, params } = validation;
         switch (rule) {
           case "string":
-            validator = (validator || Yup.string()).typeError("Must be a string");
+            validator = (validator || Yup.string()).typeError(
+              "Must be a string"
+            );
             break;
           case "integer":
-            validator = (validator || Yup.number().integer()).typeError("Must be an integer");
+            validator = (validator || Yup.number().integer()).typeError(
+              "Must be an integer"
+            );
             break;
           case "number":
-            validator = (validator || Yup.number()).typeError("Must be a number");
+            validator = (validator || Yup.number()).typeError(
+              "Must be a number"
+            );
             break;
           case "maxLength":
-            validator = (validator || Yup.string()).max(params, `Maximum length is ${params}`);
+            validator = (validator || Yup.string()).max(
+              params,
+              `Maximum length is ${params}`
+            );
             break;
           case "min":
-            validator = (validator || Yup.number()).min(params, `Minimum value is ${params}`);
+            validator = (validator || Yup.number()).min(
+              params,
+              `Minimum value is ${params}`
+            );
             break;
           case "notEmpty":
-            validator = (validator || Yup.mixed()).required("This field is required");
+            validator = (validator || Yup.mixed()).required(
+              "This field is required"
+            );
             break;
           case "oneOf":
-            validator = (validator || Yup.mixed()).oneOf(field.options, `Must be one of: ${field.options.join(", ")}`);
+            validator = (validator || Yup.mixed()).oneOf(
+              field.options,
+              `Must be one of: ${field.options.join(", ")}`
+            );
             break;
           default:
             break;

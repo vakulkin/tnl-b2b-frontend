@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import EntityAttachForm from "../EntityAttachForm";
+import EntityAttachForm from "./EntityAttachForm";
 import { useManagement } from "../../../useManagement";
 
 const EntityAttachDepsLoader = ({ entityKey }) => {

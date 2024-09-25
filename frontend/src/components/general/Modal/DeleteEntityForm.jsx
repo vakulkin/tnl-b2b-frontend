@@ -24,9 +24,9 @@ const DeleteEntityForm = ({ entityKey }) => {
         <Typography>Are you sure you want to delete this entity? This action cannot be undone.</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleFormDialogClose}>Cancel</Button>
+        <Button onClick={handleFormDialogClose}>Zamknij</Button>
         <Button variant="contained" onClick={handleDelete}>
-          Delete
+          Usun
         </Button>
       </DialogActions>
     </>
