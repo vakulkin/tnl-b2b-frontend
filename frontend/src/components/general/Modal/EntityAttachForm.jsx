@@ -84,7 +84,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
 
   return (
     <>
-      <DialogTitle>Dolącz {infoData.entity_name_single}</DialogTitle>
+      <DialogTitle>Dolącz {infoData.dependent_key} do {infoData.entity_name_single}</DialogTitle>
       <DialogContent>
         {attachmentsData?.map((item) => (
           <FormControlLabel
@@ -98,10 +98,10 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
             label={`${item.id}. ${item.name}`}
           />
         ))}
-        <Box sx={{mt: 2, display: "flex", justifyContent: "center"}}>
+        <Box sx={{mt: 4, display: "flex", justifyContent: "center"}}>
           <ActionButton
             icon={<AddCircleOutlineIcon />}
-            label="Add logic block"
+            label={`Dodaj ${infoData.dependent_key}`}
             ariaLabel="add"
             onClick={() => handleFormDialogOpen("add")}
           />
