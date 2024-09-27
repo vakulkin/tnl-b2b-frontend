@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import PageHeader from "../../components/general/PageHeader";
-import LogicBlockCard from "../../components/logicBlocks/logicBlockCard";
+import LogicBlockCard from "../../components/logicBlocks/LogicBlockCard";
 import EditModal from "../../components/general/Modal/EditModal";
 
 const LogicBlocks = () => {
