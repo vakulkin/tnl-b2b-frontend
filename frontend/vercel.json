@@ -1,11 +1,15 @@
 {
-  "github": {
-      "silent": true
+  "projects": {
+    "frontend": {
+      "src": "frontend",
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist"
+    }
   },
-  "rewrites": [
-      {
-          "source": "(.*)",
-          "destination": "/index.html"
-      }
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/dist/index.html"
+    }
   ]
 }
