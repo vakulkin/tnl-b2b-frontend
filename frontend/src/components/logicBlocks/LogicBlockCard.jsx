@@ -2,9 +2,13 @@ import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import PropTypes from "prop-types";
 import CardHeader from "../general/CardHeader";
-import UsersConditions from "./UsersConditions";
-import ProductsConditions from "./ProductsConditions";
+
+// import UsersConditions from "./UsersConditions";
+// import ProductsConditions from "./ProductsConditions";
+
 import LogicSeparator from "./LogicSeparator";
+
+import CardAttacments from "../cards/CardAttacments";
 
 const LogicBlockCard = ({ logicBlock }) => {
   return (
@@ -17,21 +21,35 @@ const LogicBlockCard = ({ logicBlock }) => {
       }}
     >
       <CardHeader entityKey="logic_blocks" entity={logicBlock} />
-
-      <Grid container spacing={2} columns={25} alignItems="center">
-        <Grid size={{ xs: 25, lg: 8, xl: 9 }}>
-          <UsersConditions
-            logicBlock={logicBlock}
+      <Grid container spacing={2} columns={32} alignItems="center">
+        <Grid size={{ xs: 32, xl: 10 }}>
+          <CardAttacments
+            entityKey="logic_blocks"
+            entity={logicBlock}
+            attachmentKey="roles"
+            separator="i"
           />
         </Grid>
-
-        <Grid size={{ xs: 25, lg: 1 }}>
+        <Grid size={{ xs: 32, xl: 1 }}>
           <LogicSeparator separator="i" />
         </Grid>
-
-        <Grid size={{ xs: 25, lg: 16, xl: 15 }}>
-          <ProductsConditions
-            logicBlock={logicBlock}
+        <Grid size={{ xs: 32, xl: 10 }}>
+          <CardAttacments
+            entityKey="logic_blocks"
+            entity={logicBlock}
+            attachmentKey="groups"
+            separator="i"
+          />
+        </Grid>
+        <Grid size={{ xs: 32, xl: 1 }}>
+          <LogicSeparator separator="i" />
+        </Grid>
+        <Grid size={{ xs: 32, xl: 10 }}>
+          <CardAttacments
+            entityKey="logic_blocks"
+            entity={logicBlock}
+            attachmentKey="terms"
+            separator="i"
           />
         </Grid>
       </Grid>

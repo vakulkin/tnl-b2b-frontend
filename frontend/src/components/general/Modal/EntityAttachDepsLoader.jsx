@@ -8,7 +8,7 @@ const EntityAttachDepsLoader = ({ entityKey }) => {
 
   const {
     data: depsData,
-    isFetching: depsIsLoading,
+    isLoading: depsIsLoading,
     error: depsError,
   } = useEntitiesQuery("deps");
 

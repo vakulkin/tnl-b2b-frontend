@@ -13,10 +13,11 @@ import { Link } from "@tanstack/react-router";
 
 function Header() {
   const mainMenu = [
-    { title: "Rules", link: "/rules" },
-    { title: "Warunki", link: "/logic-blocks" },
-    { title: "Grupy", link: "/groups" },
-    { title: "Role", link: "/roles" },
+    { title: "Info", link: "/" },
+    { title: "Reguły cenowe", link: "/rules" },
+    { title: "Warunki logiczne", link: "/logic-blocks" },
+    { title: "Grupy produktów", link: "/groups" },
+    { title: "Role użytkowników", link: "/roles" },
   ];
 
   return (

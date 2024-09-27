@@ -1,14 +1,34 @@
-import { Box, Typography, Stack, Chip } from "@mui/material";
+import React from "react";
+import { Box, Typography, Stack, Chip, Tooltip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 import { getEntityStore } from "../../store";
+import { useManagement } from "../../useManagement";
 
-const CardAttacments = ({ entityKey, entity, attachmentEntityKey }) => {
-
+const CardAttacments = ({
+  entityKey,
+  entity,
+  attachmentKey,
+  separator = "",
+}) => {
   const useStore = getEntityStore(entityKey);
   const { handleFormDialogOpen } = useStore();
 
-  const itemsIds = entity[attachmentEntityKey] ? JSON.parse(entity[attachmentEntityKey]) : [];
+  const { useEntitiesQuery } = useManagement(attachmentKey);
+
+  const {
+    data: attachmentInfoData,
+    isLoading: attachmentInfoIsLoading,
+    error: attachmentInfoError,
+  } = useEntitiesQuery("info");
+
+  if (attachmentInfoIsLoading) return "Loading...";
+  if (attachmentInfoError) return "Error loading data.";
+
+  const itemsIds = entity[attachmentKey]
+    ? JSON.parse(entity[attachmentKey])
+    : [];
 
   return (
     <Box
@@ -23,24 +43,31 @@ const CardAttacments = ({ entityKey, entity, attachmentEntityKey }) => {
         variant="body2"
         sx={{ fontSize: 16, mb: 1, color: "#2C3E50" }}
       >
-        {attachmentEntityKey}
+        {attachmentInfoData.many ?? attachmentKey}:
       </Typography>
       <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
         <Chip
-          icon={<AddIcon />}
-          label="Dodaj"
+          icon={itemsIds.length ? <EditOutlinedIcon /> : <AddIcon />}
+          label={itemsIds.length ? "Edytuj" : "Dodaj"}
           variant="outlined"
           size="small"
-          onClick={() => handleFormDialogOpen("link", entity.id, attachmentEntityKey)}
+          onClick={() => handleFormDialogOpen("link", entity.id, attachmentKey)}
         />
-        {itemsIds.map((item) => {
+        {itemsIds.map((item, index) => {
           return (
-            <Chip
-              key={item.primary_id}
-              label={`${item.primary_id} ${item.name}`}
-              variant="outlined"
-              size="small"
-            />
+            <React.Fragment key={item.primary_id}>
+              {!!index && !!separator.length && (
+                <Chip size="small" variant="outlined" label={separator} />
+              )}
+              <Chip
+                label={
+                  <Tooltip title={`id: ${item.primary_id}`} placement="right">
+                    <span>{item.name}</span>
+                  </Tooltip>
+                }
+                size="small"
+              />
+            </React.Fragment>
           );
         })}
       </Stack>
@@ -54,7 +81,8 @@ CardAttacments.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }),
-  attachmentEntityKey: PropTypes.string.isRequired,
+  attachmentKey: PropTypes.string.isRequired,
+  separator: PropTypes.string.isRequired,
 };
 
 export default CardAttacments;

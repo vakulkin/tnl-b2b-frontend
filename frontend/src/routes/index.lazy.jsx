@@ -1,4 +1,11 @@
-import { Typography, Box, List, ListItem, ListItemText, Divider } from '@mui/material';
+import {
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
@@ -8,6 +15,24 @@ export const Route = createLazyFileRoute("/")({
 function Index() {
   return (
     <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Zdefiniuj role i grupy, przypisz do nich użytkowników i produkty
+      </Typography>
+
+      <List>
+        <ListItem>
+          <ListItemText primary="Określ role użytkowników oraz grupy produktów" />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Przypisz odpowiednich użytkowników do ról" />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Przypisz produkty do odpowiednich grup" />
+        </ListItem>
+      </List>
+
+      <Divider sx={{ my: 4 }} />
+
       <Typography variant="h4" gutterBottom>
         Utwórz reguły cenowe
       </Typography>
@@ -54,36 +79,13 @@ function Index() {
       </Typography>
       <List>
         <ListItem>
-          <ListItemText primary="Konkretnych użytkowników" />
-        </ListItem>
-        <ListItem>
           <ListItemText primary="Role użytkowników" />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Konkretne produkty" />
         </ListItem>
         <ListItem>
           <ListItemText primary="Grupy produktów" />
         </ListItem>
         <ListItem>
           <ListItemText primary="Terminy WooCommerce (kategorie, tagi, atrybuty)" />
-        </ListItem>
-      </List>
-
-      <Divider sx={{ my: 4 }} />
-
-      <Typography variant="h4" gutterBottom>
-        Zdefiniuj role i grupy, przypisz do nich użytkowników i produkty
-      </Typography>
-      <List>
-        <ListItem>
-          <ListItemText primary="• Określ role użytkowników oraz grupy produktów" />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="• Przypisz odpowiednich użytkowników do ról" />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="• Przypisz produkty do odpowiednich grup" />
         </ListItem>
       </List>
     </Box>

@@ -5,68 +5,80 @@ import {
   Button,
   DialogTitle,
   DialogContent,
-  FormControlLabel,
-  Checkbox,
+  Typography,
+  Stack,
+  Chip,
+  Tooltip,
 } from "@mui/material";
+
 
 import { getEntityStore } from "../../../store";
 import { useManagement } from "../../../useManagement";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddLinkIcon from '@mui/icons-material/AddLink';
+import LinkOffIcon from "@mui/icons-material/LinkOff";
+
 import ActionButton from "../ActionButton";
 
 const EntityAttachForm = ({ entityKey, depsData }) => {
   const useStore = getEntityStore(entityKey);
-  const { selectedEntityId, attachmentEntityKey, handleFormDialogClose } =
-    useStore();
+
+  const { selectedEntityId, attachmentKey, handleFormDialogClose } = useStore();
 
   const { useEntityQuery, useEntitiesQuery } = useManagement(entityKey);
-  
+
   const {
     data: entityData,
-    isFetching: entityIsLoading,
+    isFetching: entityIsFetching,
+    isLoading: entityIsLoading,
     error: entityError,
   } = useEntityQuery(selectedEntityId, "joined");
 
-  const { data: infoData, isFetching: infoIsLoading } =
-  useEntitiesQuery("info");
+  const {
+    data: infoData,
+    isLoading: infoIsLoading,
+    error: infoError,
+  } = useEntitiesQuery("info");
 
   const { useEntitiesQuery: useEntitiesQueryAttachments } =
-    useManagement(attachmentEntityKey);
+    useManagement(attachmentKey);
+
   const {
     data: attachmentsData,
-    isFetching: attachmentsIsLoading,
+    isLoading: attachmentsIsLoading,
     error: attachmentsError,
   } = useEntitiesQueryAttachments("simple");
 
   const { createMutation, deleteMutation } = useManagement(
-    depsData[attachmentEntityKey].relation.route
+    depsData[attachmentKey].relation.route
   );
 
-  const useStoreLogicBlocks = getEntityStore("logic_blocks");
-  const { handleFormDialogOpen } = useStoreLogicBlocks();
+  const {
+    data: attachmentInfoData,
+    isLoading: attachmentInfoIsLoading,
+    error: attachmentInfoError,
+  } = useEntitiesQueryAttachments("info");
 
-  // Handle loading and error states
-  if (entityIsLoading || attachmentsIsLoading || infoIsLoading) return "Loading...";
-  if (entityError || attachmentsError) return "Error loading data.";
+  const useStoreAttachment = getEntityStore(attachmentKey);
+  const { handleFormDialogOpen } = useStoreAttachment();
+
+  if (
+    entityIsLoading ||
+    attachmentsIsLoading ||
+    infoIsLoading ||
+    attachmentInfoIsLoading
+  )
+    return "Loading...";
+  if (entityError || attachmentsError || infoError || attachmentInfoError)
+    return "Error loading data.";
 
   const attachedIds = entityData
-    ? JSON.parse(entityData?.[0]?.[attachmentEntityKey] || "[]")
+    ? JSON.parse(entityData?.[0]?.[attachmentKey] || "[]")
     : [];
 
-  const handleCheckboxChange = (e, item) => {
-    if (e.target.checked) {
-      const newEntity = {
-        [depsData[attachmentEntityKey].relation.foreign_key_1]:
-          selectedEntityId,
-        [depsData[attachmentEntityKey].relation.foreign_key_2]: item.id,
-      };
-      createMutation.mutate(newEntity, {
-        onError: (error) => {
-          console.error("Error creating relation:", error);
-        },
-      });
-    } else {
+  const handleChipClick = (checked, item) => {
+    if (checked) {
       const elementToDelete = attachedIds.find(
         (elem) => elem.primary_id === item.id
       );
@@ -77,35 +89,69 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
           },
         });
       }
+    } else {
+      const newEntity = {
+        [depsData[attachmentKey].relation.foreign_key_1]: selectedEntityId,
+        [depsData[attachmentKey].relation.foreign_key_2]: item.id,
+      };
+      createMutation.mutate(newEntity, {
+        onError: (error) => {
+          console.error("Error creating relation:", error);
+        },
+      });
     }
   };
 
   const checkedIds = attachedIds.map((item) => item.primary_id);
+  const disabled =
+    entityIsFetching || createMutation.isPending || deleteMutation.isPending;
 
   return (
     <>
-      <DialogTitle>Dolącz {infoData.dependent_key} do {infoData.entity_name_single}</DialogTitle>
+      <DialogTitle>
+        Dolącz {infoData.whom} &quot;{entityData?.[0].name}
+        &quot;
+      </DialogTitle>
       <DialogContent>
-        {attachmentsData?.map((item) => (
-          <FormControlLabel
-            key={item.id}
-            control={
-              <Checkbox
-                checked={checkedIds.includes(item.id)}
-                onChange={(e) => handleCheckboxChange(e, item)}
-              />
-            }
-            label={`${item.id}. ${item.name}`}
-          />
-        ))}
-        <Box sx={{mt: 4, display: "flex", justifyContent: "center"}}>
-          <ActionButton
-            icon={<AddCircleOutlineIcon />}
-            label={`Dodaj ${infoData.dependent_key}`}
-            ariaLabel="add"
-            onClick={() => handleFormDialogOpen("add")}
-          />
-        </Box>
+        {!!attachmentsData.length && (
+          <>
+            <Typography sx={{ mb: 2 }}>
+              Wybierz {attachmentInfoData.many}:
+            </Typography>
+            <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
+              {attachmentsData?.map((item) => {
+                const checked = checkedIds.includes(item.id);
+                return (
+                  <Chip
+                    key={item.id}
+                    label={
+                      <Tooltip title={`id: ${item.primary_id}`} placement="right">
+                        <span>{item.name}</span>
+                      </Tooltip>
+                    }
+                    disabled={disabled}
+                    icon={checked ? <LinkOffIcon /> : <AddLinkIcon />}
+                    variant={checked ? "filled" : "outlined"}
+                    onClick={() => handleChipClick(checked, item)}
+                  />
+                );
+              })}
+            </Stack>
+          </>
+        )}
+        {attachmentInfoData.dependent_key && (
+          <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+            <ActionButton
+              icon={<AddCircleOutlineIcon />}
+              label={`Dodaj ${attachmentInfoData.whom}`}
+              ariaLabel="add"
+              onClick={() => {
+                handleFormDialogClose();
+                handleFormDialogOpen("add");
+              }}
+            />
+          </Box>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleFormDialogClose}>Zamknij</Button>

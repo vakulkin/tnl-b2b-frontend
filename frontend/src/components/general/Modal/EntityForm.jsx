@@ -55,9 +55,7 @@ const EntityForm = ({ entityKey }) => {
   return (
     <>
       <DialogTitle>
-        {isCreateMode
-          ? `Dodaj ${infoData.entity_name_single}`
-          : `Edytuj ${infoData.entity_name_single}`}
+        {isCreateMode ? "Dodaj" : "Edytuj"} {infoData.singular}
       </DialogTitle>
       <Formik
         initialValues={initialValues}

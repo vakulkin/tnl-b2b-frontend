@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import CardHeader from "../general/CardHeader";
 import CardAttacments from "./CardAttacments";
 
-const SingleCard = ({ entityKey, entity, attachmentEntityKey }) => {
+const SingleCard = ({
+  children,
+  entityKey,
+  entity,
+  attachmentKey,
+  separator = "",
+}) => {
   return (
     <Box
       sx={{
@@ -13,23 +19,28 @@ const SingleCard = ({ entityKey, entity, attachmentEntityKey }) => {
         borderRadius: 7,
       }}
     >
-      <CardHeader entityKey={entityKey} entity={entity} />
+      <CardHeader entityKey={entityKey} entity={entity}>
+        {children}
+      </CardHeader>
       <CardAttacments
         entityKey={entityKey}
         entity={entity}
-        attachmentEntityKey={attachmentEntityKey}
+        attachmentKey={attachmentKey}
+        separator={separator}
       />
     </Box>
   );
 };
 
 SingleCard.propTypes = {
+  children: PropTypes.node,
   entityKey: PropTypes.string.isRequired,
   entity: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
-  attachmentEntityKey: PropTypes.string.isRequired,
+  attachmentKey: PropTypes.string.isRequired,
+  separator: PropTypes.string.isRequired,
 };
 
 export default SingleCard;

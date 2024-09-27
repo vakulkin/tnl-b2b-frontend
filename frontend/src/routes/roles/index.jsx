@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import PageHeader from "../../components/general/PageHeader";
-import EditModal from "../../components/general/Modal/EditModal";
+import EditModal from "../../components/general/modal/EditModal";
 import SingleCard from "../../components/cards/SingleCard";
 
 const Roles = () => {
@@ -23,7 +23,7 @@ const Roles = () => {
             key={role.id}
             entityKey={entityKey}
             entity={role}
-            attachmentEntityKey="users"
+            attachmentKey="users"
           />
         ))}
         <EditModal entityKey={entityKey} />

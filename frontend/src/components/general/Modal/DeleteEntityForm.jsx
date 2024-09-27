@@ -1,5 +1,11 @@
 import PropTypes from "prop-types";
-import { DialogActions, Button, Typography, DialogTitle, DialogContent } from "@mui/material";
+import {
+  DialogActions,
+  Button,
+  Typography,
+  DialogTitle,
+  DialogContent,
+} from "@mui/material";
 import { getEntityStore } from "../../../store";
 import { useManagement } from "../../../useManagement";
 
@@ -17,16 +23,16 @@ const DeleteEntityForm = ({ entityKey }) => {
 
   return (
     <>
-      <DialogTitle>
-        Delete
-      </DialogTitle>
+      <DialogTitle>Usuń</DialogTitle>
       <DialogContent>
-        <Typography>Are you sure you want to delete this entity? This action cannot be undone.</Typography>
+        <Typography>
+          Czy na pewno chcesz usunąć ten podmiot? Tej akcji nie można cofnąć.
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleFormDialogClose}>Zamknij</Button>
         <Button variant="contained" onClick={handleDelete}>
-          Usun
+          Usuń
         </Button>
       </DialogActions>
     </>

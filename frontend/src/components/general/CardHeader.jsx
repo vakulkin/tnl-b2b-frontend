@@ -12,7 +12,7 @@ const CardHeader = ({ children, entityKey, entity }) => {
         mb: 2,
       }}
     >
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
       <Chip label={entity.name} />
       <Chip label={`id: ${entity.id}`} />
       {children}
