@@ -22,6 +22,7 @@ const LogicBlocks = () => {
           <LogicBlockCard logicBlock={logicBlock} key={logicBlock.id} />
         ))}
         <EditModal entityKey={entityKey} />
+        <EditModal entityKey="rules" />
       </Box>
     </>
   );
