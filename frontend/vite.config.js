@@ -9,8 +9,4 @@ export default defineConfig({
     viteReact(),
     TanStackRouterVite(),
   ],
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-  },
 });
