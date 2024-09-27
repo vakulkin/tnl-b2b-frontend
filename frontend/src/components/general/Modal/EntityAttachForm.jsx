@@ -70,7 +70,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     attachmentInfoIsLoading
   )
     return "Loading...";
-  if (entityError || attachmentsError || infoError || attachmentInfoError)
+  if (entityError || attachmentsError || infoError || attachmentInfoError || attachmentInfoIsLoading)
     return "Error loading data.";
 
   const attachedIds = entityData
