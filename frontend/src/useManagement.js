@@ -7,8 +7,8 @@ import {
 } from "@tanstack/react-query";
 import { getEntityStore } from "./store";
 
-const BASE_URL = `https://3.71.42.165/wp-json/tnl-b2b/v1`;
-// const BASE_URL = "http://btwob.local/wp-json/tnl-b2b/v1";
+// const BASE_URL = `https://3.71.42.165/wp-json/tnl-b2b/v1`;
+const BASE_URL = "http://btwob.local/wp-json/tnl-b2b/v1";
 
 const apiRequest = async (method, url, data = null) => {
   try {
