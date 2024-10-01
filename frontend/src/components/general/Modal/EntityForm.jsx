@@ -40,11 +40,11 @@ const EntityForm = ({ entityKey }) => {
     if (field.type === "select" && field.options && field.options.length > 0) {
       acc[field.name] = isCreateMode
         ? field.options[0]
-        : (entityData?.[0]?.[field.name] ?? "");
+        : (entityData?.[field.name] ?? "");
     } else {
       acc[field.name] = isCreateMode
         ? ""
-        : (entityData?.[0]?.[field.name] ?? "");
+        : (entityData?.[field.name] ?? "");
     }
     return acc;
   }, {});

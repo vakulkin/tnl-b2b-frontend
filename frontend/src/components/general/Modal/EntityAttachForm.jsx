@@ -74,7 +74,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     return "Error loading data.";
 
   const attachedIds = entityData
-    ? JSON.parse(entityData?.[0]?.[attachmentKey] || "[]")
+    ? JSON.parse(entityData?.[attachmentKey] || "[]")
     : [];
 
   const handleChipClick = (checked, item) => {
@@ -109,7 +109,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   return (
     <>
       <DialogTitle>
-        Dolącz {infoData.whom} &quot;{entityData?.[0].name}
+        Dolącz {infoData.whom} &quot;{entityData?.name}
         &quot;
       </DialogTitle>
       <DialogContent>

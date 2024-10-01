@@ -90,8 +90,8 @@ export const useManagement = (entityName) => {
   const createMutation = useGenericMutation(
     (newEntity) => apiRequest("post", apiUrl(), newEntity),
     (data, variables) => {
-      if (data?.[0]?.id && variables.attachmentKey) {
-        handleFormDialogOpen("link", data[0].id, variables.attachmentKey);
+      if (data?.id && variables.attachmentKey) {
+        handleFormDialogOpen("link", data.id, variables.attachmentKey);
       }
     }
   );
