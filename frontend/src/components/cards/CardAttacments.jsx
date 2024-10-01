@@ -61,7 +61,7 @@ const CardAttacments = ({
               )}
               <Chip
                 label={
-                  <Tooltip title={`id: ${item.primary_id}`} placement="right">
+                  <Tooltip title={`id: ${item.primary_id}`} placement="top">
                     <span>{item.name}</span>
                   </Tooltip>
                 }

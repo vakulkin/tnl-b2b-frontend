@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { useManagement } from "../../useManagement";
 import PageHeader from "../../components/general/PageHeader";
 import LogicBlockCard from "../../components/logicBlocks/LogicBlockCard";
-import EditModal from "../../components/general/Modal/EditModal";
+import EditModal from "../../components/general/modal/EditModal";
 
 const LogicBlocks = () => {
   const entityKey = "logic_blocks";
@@ -23,6 +23,9 @@ const LogicBlocks = () => {
         ))}
         <EditModal entityKey={entityKey} />
         <EditModal entityKey="rules" />
+        <EditModal entityKey="roles" />
+        <EditModal entityKey="groups" />
+        <EditModal entityKey="terms" />
       </Box>
     </>
   );

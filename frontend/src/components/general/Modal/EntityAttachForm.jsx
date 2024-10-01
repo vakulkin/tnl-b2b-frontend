@@ -109,14 +109,13 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   return (
     <>
       <DialogTitle>
-        Dolącz {infoData.whom} &quot;{entityData?.name}
-        &quot;
+        Wybierz {attachmentInfoData.many}
       </DialogTitle>
       <DialogContent>
         {!!attachmentsData.length && (
           <>
             <Typography sx={{ mb: 2 }}>
-              Wybierz {attachmentInfoData.many}:
+              Które trzeba dodać do &quot;{infoData.singular} {entityData?.name}&quot;
             </Typography>
             <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
               {attachmentsData?.map((item) => {
@@ -125,7 +124,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
                   <Chip
                     key={item.id}
                     label={
-                      <Tooltip title={`id: ${item.primary_id}`} placement="right">
+                      <Tooltip title={`id: ${item.id}`} placement="top">
                         <span>{item.name}</span>
                       </Tooltip>
                     }
