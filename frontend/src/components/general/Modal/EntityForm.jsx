@@ -65,6 +65,7 @@ const EntityForm = ({ entityKey }) => {
       >
         {({ errors, touched, handleChange, values }) => (
           <Form>
+            
             <DialogContent>
               <FormFields
                 fieldsList={fieldsList}
