@@ -43,7 +43,7 @@ const CardAttacments = ({
         variant="body2"
         sx={{ fontSize: 16, mb: 1, color: "#2C3E50" }}
       >
-        {attachmentInfoData.many ?? attachmentKey}:
+        {attachmentInfoData?.many ?? attachmentKey}:
       </Typography>
       <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
         <Chip

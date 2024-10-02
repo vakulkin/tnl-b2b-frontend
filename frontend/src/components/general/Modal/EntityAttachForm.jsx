@@ -109,13 +109,13 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   return (
     <>
       <DialogTitle>
-        Wybierz {attachmentInfoData.many}
+        Wybierz {attachmentInfoData?.many}
       </DialogTitle>
       <DialogContent>
         {!!attachmentsData.length && (
           <>
             <Typography sx={{ mb: 2 }}>
-              Które trzeba dodać do &quot;{infoData.singular} {entityData?.name}&quot;
+              Które trzeba dodać do &quot;{infoData?.singular} {entityData?.name}&quot;
             </Typography>
             <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
               {attachmentsData?.map((item) => {
@@ -138,11 +138,11 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
             </Stack>
           </>
         )}
-        {"plugin" === attachmentInfoData.type && (
+        {"plugin" === attachmentInfoData?.type && (
           <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
             <ActionButton
               icon={<AddCircleOutlineIcon />}
-              label={`Dodaj ${attachmentInfoData.whom}`}
+              label={`Dodaj ${attachmentInfoData?.whom}`}
               ariaLabel="add"
               onClick={() => {
                 handleFormDialogClose();

@@ -19,12 +19,12 @@ if (infoIsLoading) return "Loading...";
 
   return (
     <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between" }}>
-      <Typography variant="h4">{infoData.many}</Typography>
+      <Typography variant="h4">{infoData?.many}</Typography>
       {handleFormDialogOpen && (
         <ActionButton
           icon={<AddCircleOutlineIcon />}
           size="large"
-          label={`Dodaj ${infoData.whom}`}
+          label={`Dodaj ${infoData?.whom}`}
           ariaLabel="add"
           onClick={() => handleFormDialogOpen("add")}
         />
