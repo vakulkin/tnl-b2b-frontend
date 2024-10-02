@@ -138,7 +138,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
             </Stack>
           </>
         )}
-        {attachmentInfoData.dependent_key && (
+        {"plugin" === attachmentInfoData.type && (
           <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
             <ActionButton
               icon={<AddCircleOutlineIcon />}
