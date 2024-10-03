@@ -1,5 +1,13 @@
 import { create } from "zustand";
 
+export const useDataStore = create(set => ({
+  nonce: null,
+  homeUrl: null,
+  setNonce: (nonce) => set({ nonce }),
+  setHomeUrl: (homeUrl) => set({ homeUrl }),
+}));
+
+
 // Initial state for the store
 const commonStoreInitialState = {
   selectedEntityId: null,

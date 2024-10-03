@@ -9,12 +9,25 @@ import { ThemeProvider } from "@mui/material/styles";
 
 import { routeTree } from "./routeTree.gen";
 
-const queryClient = new QueryClient();
-const router = createRouter({ routeTree });
+import { useDataStore } from "./store";
+
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
+
+  const nonce = rootElement.getAttribute("data-nonce");
+  const homeUrl = rootElement.getAttribute("data-home-url");
+  
+  const { setNonce, setHomeUrl } = useDataStore.getState();
+  
+  setNonce(nonce);
+  setHomeUrl(homeUrl);
+  
+  
   const root = ReactDOM.createRoot(rootElement);
+  const queryClient = new QueryClient();
+  const router = createRouter({ routeTree, basepath: "/tnlb2b/" });
+
   root.render(
     <ThemeProvider theme={theme}>
       <CssBaseline />
