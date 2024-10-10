@@ -8,7 +8,7 @@ const LogicSeparator = ({ separator }) => (
 );
 
 LogicSeparator.propTypes = {
-  separator: PropTypes.string.isRequired,
+  separator: PropTypes.string,
 };
 
 export default LogicSeparator;

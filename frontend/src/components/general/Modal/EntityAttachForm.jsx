@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -9,24 +10,22 @@ import {
   Stack,
   Chip,
   Tooltip,
+  Pagination,
 } from "@mui/material";
-
-
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddLinkIcon from "@mui/icons-material/AddLink";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import { getEntityStore } from "../../../store";
 import { useManagement } from "../../../useManagement";
-
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import AddLinkIcon from '@mui/icons-material/AddLink';
-import LinkOffIcon from "@mui/icons-material/LinkOff";
-
 import ActionButton from "../ActionButton";
 
 const EntityAttachForm = ({ entityKey, depsData }) => {
-  const useStore = getEntityStore(entityKey);
+  const [page, setPage] = useState(1);
 
+  const useStore = getEntityStore(entityKey);
   const { selectedEntityId, attachmentKey, handleFormDialogClose } = useStore();
 
-  const { useEntityQuery, useEntitiesQuery } = useManagement(entityKey);
+  const { useEntityQuery } = useManagement(entityKey);
 
   const {
     data: entityData,
@@ -35,12 +34,6 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     error: entityError,
   } = useEntityQuery(selectedEntityId, "joined");
 
-  const {
-    data: infoData,
-    isLoading: infoIsLoading,
-    error: infoError,
-  } = useEntitiesQuery("info");
-
   const { useEntitiesQuery: useEntitiesQueryAttachments } =
     useManagement(attachmentKey);
 
@@ -48,7 +41,9 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     data: attachmentsData,
     isLoading: attachmentsIsLoading,
     error: attachmentsError,
-  } = useEntitiesQueryAttachments("simple");
+  } = useEntitiesQueryAttachments("simple", {
+    page
+  });
 
   const { createMutation, deleteMutation } = useManagement(
     depsData[attachmentKey].relation.route
@@ -63,14 +58,14 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
   const useStoreAttachment = getEntityStore(attachmentKey);
   const { handleFormDialogOpen } = useStoreAttachment();
 
+  if (entityIsLoading || attachmentsIsLoading || attachmentInfoIsLoading)
+    return "Loading...";
   if (
-    entityIsLoading ||
-    attachmentsIsLoading ||
-    infoIsLoading ||
+    entityError ||
+    attachmentsError ||
+    attachmentInfoError ||
     attachmentInfoIsLoading
   )
-    return "Loading...";
-  if (entityError || attachmentsError || infoError || attachmentInfoError || attachmentInfoIsLoading)
     return "Error loading data.";
 
   const attachedIds = entityData
@@ -102,23 +97,27 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     }
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
   const checkedIds = attachedIds.map((item) => item.primary_id);
   const disabled =
     entityIsFetching || createMutation.isPending || deleteMutation.isPending;
 
+  const pageCount = Math.ceil(attachmentsData.total / attachmentsData.per_page);
+
   return (
     <>
-      <DialogTitle>
-        Wybierz {attachmentInfoData?.many}
-      </DialogTitle>
+      <DialogTitle>Wybierz {attachmentInfoData?.many}</DialogTitle>
       <DialogContent>
-        {!!attachmentsData.length && (
+        {!!attachmentsData.items.length && (
           <>
             <Typography sx={{ mb: 2 }}>
-              Które trzeba dodać do &quot;{infoData?.singular} {entityData?.name}&quot;
+              Które trzeba dodać do &quot;{entityData?.name}&quot;
             </Typography>
             <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
-              {attachmentsData?.map((item) => {
+              {attachmentsData.items?.map((item) => {
                 const checked = checkedIds.includes(item.id);
                 return (
                   <Chip
@@ -136,6 +135,16 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
                 );
               })}
             </Stack>
+            {pageCount > 1 && (
+              <Box sx={{ m: 2, display: "flex", justifyContent: "center" }}>
+                <Pagination
+                  disabled={disabled}
+                  count={pageCount}
+                  page={page}
+                  onChange={handlePageChange}
+                />
+              </Box>
+            )}
           </>
         )}
         {"plugin" === attachmentInfoData?.type && (

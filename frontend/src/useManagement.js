@@ -7,19 +7,30 @@ import {
 } from "@tanstack/react-query";
 import { useDataStore, getEntityStore } from "./store";
 
-const apiRequest = async (method, url, nonce, data = null) => {
+const apiRequest = async (method, url, nonce, data = {}) => {
   try {
     const headers = {
       "Content-Type": "application/json",
       ...(nonce && { "X-WP-Nonce": nonce }),
     };
 
+    // If GET request, add query parameters to the URL
+    if (method === "get") {
+      const queryParams = new URLSearchParams(data).toString();
+      url = `${url}${queryParams ? `?${queryParams}` : ""}`;
+    }
+
     const config = {
       headers,
       withCredentials: Boolean(nonce),
     };
 
-    const response = await axios({ method, url, data, ...config });
+    const response = await axios({
+      method,
+      url,
+      data: method !== "get" ? data : undefined,
+      ...config,
+    });
     return response.data;
   } catch (error) {
     console.error(`Error during ${method.toUpperCase()} request:`, error);
@@ -28,18 +39,24 @@ const apiRequest = async (method, url, nonce, data = null) => {
 };
 
 // Create API URL based on subPath provided
-const createApiUrl = (homeUrl, entityName, subPath = "") => {
-  return `${homeUrl}/wp-json/tnl-b2b/v1/${entityName}${subPath ? `/${subPath}` : ""}`;
+const createApiUrl = (homeUrl, entityName, subPath = "", queryParams = {}) => {
+  const queryString = new URLSearchParams(queryParams).toString();
+  return `${homeUrl}/wp-json/tnl-b2b/v1/${entityName}${subPath ? `/${subPath}` : ""}${queryString ? `?${queryString}` : ""}`;
+};
+
+// Helper function to serialize queryKey elements if they are objects
+const serializeQueryKey = (queryKey) => {
+  return queryKey.map((key) => (typeof key === "object" ? JSON.stringify(key) : key));
 };
 
 // Generic query hook
 const useGenericQuery = (queryKey, queryFn, enabled = true) =>
   useQuery({
-    queryKey,
+    queryKey: serializeQueryKey(queryKey),  // Serialize objects in queryKey
     queryFn,
     enabled,
     onError: (error) => {
-      console.error(`Error fetching ${queryKey}:`, error);
+      console.error(`Error fetching ${JSON.stringify(queryKey)}:`, error);
     },
   });
 
@@ -50,7 +67,7 @@ const useGenericMutation = (mutationFn, onSuccessFn) => {
   return useMutation({
     mutationFn,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries([mutationFn.queryKey]);
+      queryClient.invalidateQueries(serializeQueryKey([mutationFn.queryKey]));
       onSuccessFn?.(data, variables);
     },
     onError: (error) => {
@@ -61,17 +78,17 @@ const useGenericMutation = (mutationFn, onSuccessFn) => {
 
 // Main useManagement hook
 export const useManagement = (entityName) => {
-  // Move this inside the hook
   const { nonce, homeUrl } = useDataStore();
 
   const useStore = getEntityStore(entityName);
   const { handleFormDialogOpen } = useStore();
 
-  const apiUrl = (subPath) => createApiUrl(homeUrl, entityName, subPath);
+  const apiUrl = (subPath, queryParams = {}) =>
+    createApiUrl(homeUrl, entityName, subPath, queryParams);
 
-  const useEntitiesQuery = (subPath) =>
-    useGenericQuery([entityName, subPath], () =>
-      apiRequest("get", apiUrl(subPath), nonce)
+  const useEntitiesQuery = (subPath, data = { page: 1 }) =>
+    useGenericQuery([entityName, subPath, data], () =>
+      apiRequest("get", apiUrl(subPath), nonce, data)
     );
 
   const useEntityQuery = (entityId, subPath) =>
@@ -84,8 +101,9 @@ export const useManagement = (entityName) => {
   const useEntitiesQueries = (entityIdsArray, subPath) => {
     return useQueries({
       queries: entityIdsArray.map((entityId) => ({
-        queryKey: [entityName, subPath, entityId],
-        queryFn: () => apiRequest("get", apiUrl(`${subPath}/${entityId}`), nonce),
+        queryKey: serializeQueryKey([entityName, subPath, entityId]),  // Serialize objects in queryKey
+        queryFn: () =>
+          apiRequest("get", apiUrl(`${subPath}/${entityId}`), nonce),
         enabled: !!entityId,
         staleTime: 1800000,
         cacheTime: 3600000,
