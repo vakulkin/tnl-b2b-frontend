@@ -11,6 +11,7 @@ import {
   Chip,
   Tooltip,
   Pagination,
+  TextField,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddLinkIcon from "@mui/icons-material/AddLink";
@@ -21,6 +22,7 @@ import ActionButton from "../ActionButton";
 
 const EntityAttachForm = ({ entityKey, depsData }) => {
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const useStore = getEntityStore(entityKey);
   const { selectedEntityId, attachmentKey, handleFormDialogClose } = useStore();
@@ -42,7 +44,8 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     isLoading: attachmentsIsLoading,
     error: attachmentsError,
   } = useEntitiesQueryAttachments("simple", {
-    page
+    page,
+    search: searchTerm, // Pass the search term to the query
   });
 
   const { createMutation, deleteMutation } = useManagement(
@@ -60,6 +63,7 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
 
   if (entityIsLoading || attachmentsIsLoading || attachmentInfoIsLoading)
     return "Loading...";
+  
   if (
     entityError ||
     attachmentsError ||
@@ -101,6 +105,11 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     setPage(value);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setPage(1); // Reset page to 1 whenever search term changes
+  };
+
   const checkedIds = attachedIds.map((item) => item.primary_id);
   const disabled =
     entityIsFetching || createMutation.isPending || deleteMutation.isPending;
@@ -111,6 +120,15 @@ const EntityAttachForm = ({ entityKey, depsData }) => {
     <>
       <DialogTitle>Wybierz {attachmentInfoData?.many}</DialogTitle>
       <DialogContent>
+        <Box sx={{ py: 2 }}>
+          <TextField
+            label="Szukaj"
+            variant="outlined"
+            fullWidth
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </Box>
         {!!attachmentsData.items.length && (
           <>
             <Typography sx={{ mb: 2 }}>
